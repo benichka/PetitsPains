@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using System.Text;
 
 namespace PetitsPains.Model
 {
@@ -142,6 +143,27 @@ namespace PetitsPains.Model
             {
                 return DateTime.Compare(Date.Value, other.Date.Value);
             }
+        }
+
+        /// <summary>
+        /// Returns the representation of a croissant as a string.
+        /// </summary>
+        /// <returns>The representation of a croissant as a string.</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("Croissant: ");
+            if (Date.HasValue)
+            {
+                sb.Append(String.Format("date: {0}; ", Date.Value.ToString("d")));
+            }
+            else
+            {
+                sb.Append("No date; ");
+            }
+            sb.Append(String.Format("State: {0}; ", State));
+
+            return sb.ToString();
         }
 
         #region event handling

@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using PetitsPains.Enums;
+using PetitsPains.Utils;
 
 namespace PetitsPains.Model
 {
@@ -201,14 +203,9 @@ namespace PetitsPains.Model
             }
 
             // TODO: finish the implementation of the removal of a penalty.
-            // -> test when the date has been nulled on the first or the last croissant.
 
-            // TODO: use a bubble sort and try to reuse it for the ProcessPenaltyAdding
-            var indexBeforeGap = 0;
-            var indexAfterGap = 0;
-
-
-            // Remove the gap in the penalties
+            // Sort the list of croissant to put the gaps to the right of the collection
+            Croissants.BubbleSort(SortDirection.Ascending);
         }
 
         /// <summary>

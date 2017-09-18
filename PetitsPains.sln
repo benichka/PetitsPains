@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetitsPains", "PetitsPains\PetitsPains.csproj", "{F28689D5-0731-4422-8917-7915A4071294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetitsPainsTest", "PetitsPainsTest\PetitsPainsTest.csproj", "{3351483D-2A2D-4153-98E6-2F20C6E62CA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +17,15 @@ Global
 		{F28689D5-0731-4422-8917-7915A4071294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F28689D5-0731-4422-8917-7915A4071294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F28689D5-0731-4422-8917-7915A4071294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3351483D-2A2D-4153-98E6-2F20C6E62CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3351483D-2A2D-4153-98E6-2F20C6E62CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3351483D-2A2D-4153-98E6-2F20C6E62CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3351483D-2A2D-4153-98E6-2F20C6E62CA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {772EDFC4-4A30-4104-827C-1A969FB5C9C7}
 	EndGlobalSection
 EndGlobal

@@ -96,6 +96,7 @@
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\Enums.cs" />
     <Compile Include="ViewModel\IClosable.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
