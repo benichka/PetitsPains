@@ -16,6 +16,12 @@ namespace PetitsPains.Model
         /// <summary>Last name.</summary>
         public string LastName { get; set; }
 
+        /// <summary>PersoID; usually a combination of first name + last name.</summary>
+        public string PersoID { get; set; }
+
+        /// <summary>Email.</summary>
+        public string Email { get; set; }
+
         /// <summary>
         /// Default constructor, needed for a JavascriptSerializer.
         /// </summary>
@@ -36,6 +42,19 @@ namespace PetitsPains.Model
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="firstName">Person's first name.</param>
+        /// <param name="lastName">Person's last name.</param>
+        /// <param name="email">Person's email.</param>
+        public Person(string firstName, string lastName, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+
+        /// <summary>
         /// Represents a person as a string.
         /// </summary>
         /// <returns>The person as a string.</returns>
@@ -53,6 +72,7 @@ namespace PetitsPains.Model
         {
             FirstName = info.GetValue("FirstName", typeof(string)) as string;
             LastName = info.GetValue("LastName", typeof(string)) as string;
+            Email = info.GetValue("Email", typeof(string)) as string;
         }
 
         /// <summary>
@@ -65,6 +85,7 @@ namespace PetitsPains.Model
         {
             info.AddValue("FirstName", FirstName);
             info.AddValue("LastName", LastName);
+            info.AddValue("Email", Email);
         }
 
         /// <summary>

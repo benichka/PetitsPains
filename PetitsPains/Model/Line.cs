@@ -21,6 +21,9 @@ namespace PetitsPains.Model
         /// <summary>List of croissants for the person.</summary>
         public ObservableCollection<Croissant> Croissants { get; set; }
 
+        /// <summary>Selected croissant in the Croissants collection.</summary>
+        public Croissant SelectedCroissant { get; set; }
+
         private readonly int _CroissantsSlots;
         /// <summary>Maximum croissants slots.</summary>
         public int CroissantsSlots

@@ -22,7 +22,7 @@ namespace PetitsPains.View
 
             // By default, the language of the UI is set to en-us. We force the culture to
             // be the one that is running on the user's desktop.
-            this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
+            this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
 
             InitializeComponent();
         }

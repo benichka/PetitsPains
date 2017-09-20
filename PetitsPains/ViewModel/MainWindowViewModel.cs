@@ -11,6 +11,18 @@ using PetitsPains.Model;
 namespace PetitsPains.ViewModel
 {
     /// <summary>
+    /// Technical object used as a parameter for removing a penalty.
+    /// </summary>
+    public class RemovePenaltyParameter
+    {
+        /// <summary>Line where the croissant to remove is located.</summary>
+        public Line Line { get; set; }
+
+        /// <summary>Croissant to remove penalty from.</summary>
+        public Croissant Croissant { get; set; }
+    }
+
+    /// <summary>
     /// View model for the MainWindow view
     /// </summary>
     public class MainWindowViewModel : ViewModelBase
@@ -30,6 +42,17 @@ namespace PetitsPains.ViewModel
                 {
                     line.PenaltyAlreadyExistsAtThisDate += HandlePenaltyAlreadyExistsAtThisDate;
                 }
+            }
+        }
+
+        private Line _SelectedLine;
+        /// <summary>Selected line.</summary>
+        public Line SelectedLine
+        {
+            get { return this._SelectedLine; }
+            set
+            {
+                SetProperty(CheckCommands, ref this._SelectedLine, value);
             }
         }
 
@@ -98,8 +121,6 @@ namespace PetitsPains.ViewModel
         }
         #endregion properties
 
-        private delegate void DoSomething(Line line, Croissant croissant);
-
         #region commands
         /// <summary>Command associated with the button to choose the root folder.</summary>
         public CommandHandler SelectRootPathFolderCommand { get; private set; }
@@ -109,6 +130,12 @@ namespace PetitsPains.ViewModel
 
         /// <summary>Command associated with the button to add a penalty to a line.</summary>
         public CommandHandler<Line> AddPenaltyCommand { get; private set; }
+
+        /// <summary>Command associated with the button to remove a penalty to a line.</summary>
+        public CommandHandler<RemovePenaltyParameter> RemovePenaltyCommand { get; private set; }
+
+        /// <summary>Command to select a line.</summary>
+        public CommandHandler<Line> SelectLineCommand { get; private set; }
 
         /// <summary>Command associated with the validate button.</summary>
         public CommandHandler SaveCommand { get; private set; }
@@ -127,6 +154,10 @@ namespace PetitsPains.ViewModel
             LoadFileCommand = new CommandHandler(LoadAfterCheck, () => !String.IsNullOrWhiteSpace(RootPath));
 
             AddPenaltyCommand = new CommandHandler<Line>(AddPenalty, () => true);
+
+            RemovePenaltyCommand = new CommandHandler<RemovePenaltyParameter>(RemovePenalty, CanRemovePenalty);
+
+            SelectLineCommand = new CommandHandler<Line>((line) => SelectedLine = line, () => true);
 
             // The Save button can not be clicked if the path is empty.
             SaveCommand = new CommandHandler(Save, () => !String.IsNullOrWhiteSpace(RootPath));
@@ -273,16 +304,29 @@ namespace PetitsPains.ViewModel
         /// <summary>
         /// Removes a penalty sets on a croissant.
         /// </summary>
-        /// <param name="croissant">The croissant to remote the penalty from.</param>
-        private void RemovePenalty(Line line, DateTime date)
+        /// <param name="parameter">The parameter containing information about the line and the croissant to remove the penalty from.</param>
+        private void RemovePenalty(RemovePenaltyParameter parameter)
         {
-            line.RemovePenalty(date);
+            parameter.Line.RemovePenalty(parameter.Croissant.Date.Value);
             // TODO: RemovePenalty: manage a RemovePenaltyCommand
             // -> instanciation, add to CheckCommands, manage it in the view.
+
+
+            // Add a "SelectedLine" in the view model and use it? -> remove the line in the method parameter
+        }
+
+        /// <summary>
+        /// Checks if the RemovePenaltyCommand can be executed.
+        /// </summary>
+        private bool CanRemovePenalty()
+        {
+            // TODO: implement CanRemovePenalty
+            // We need to pass a RemovePenaltyParameter to access the line. Or, use the selected line. 1st option
+            // seems better.
             // The command must be deactivated if a penalty exists on the Friday of the week, because
             // the logic on Friday changes (a person can have 1, 2 or 3 penalties on this day).
 
-            // Add a "SelectedLine" in the view model and use it? -> remove the line in the method parameter
+            return true;
         }
 
         /// <summary>
@@ -367,6 +411,8 @@ namespace PetitsPains.ViewModel
             SelectRootPathFolderCommand.RaiseCanExecuteChanged();
             LoadFileCommand.RaiseCanExecuteChanged();
             AddPenaltyCommand.RaiseCanExecuteChanged();
+            RemovePenaltyCommand.RaiseCanExecuteChanged();
+            SelectLineCommand.RaiseCanExecuteChanged();
             SaveCommand.RaiseCanExecuteChanged();
         }
     }

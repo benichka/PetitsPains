@@ -1,10 +1,12 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:ViewModel="clr-namespace:PetitsPains.ViewModel" x:Class="PetitsPains.View.MainWindow"
         xmlns:conv="clr-namespace:PetitsPains.Converter"
         xmlns:model="clr-namespace:PetitsPains.Model"
-        Title="Petits pains" Height="400" Width="525">
+        x:Name="PetitsPainsWindow"
+        Title="Petits pains" Height="500" Width="525">
     <Window.DataContext>
         <ViewModel:MainWindowViewModel />
     </Window.DataContext>
@@ -23,8 +25,9 @@
             <RowDefinition Height="45" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
-        <Grid Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
+        <Grid Margin="10" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="80" />
@@ -52,11 +55,11 @@
                 </TextBlock.Style>
             </TextBlock>
         </Grid>
-        <DockPanel Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
+        <DockPanel Margin="10" Grid.Row="1">
             <TextBlock x:Name="ProcessedDateTB" Text="Date à traiter : " VerticalAlignment="Center" />
             <DatePicker x:Name="ProcessedDateDP" SelectedDate="{Binding ProcessedDate, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="220" SelectedDateFormat="Long" />
         </DockPanel>
-        <ListView x:Name="CroissantLinesLV" Grid.Row="2" Margin="10" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lines, Mode=TwoWay}">
+        <ListView x:Name="LinesOfCroissantsLV" Grid.Row="2" Margin="10" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lines, Mode=TwoWay}" SelectedItem="{Binding SelectedLine}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Stretch">
@@ -67,7 +70,15 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="PersonTB" Grid.Column="0" Text="{Binding Person}" TextWrapping="Wrap" VerticalAlignment="Center" />
                         <StackPanel Grid.Column="1">
-                            <ListView ItemsSource="{Binding Croissants}" BorderThickness="0" HorizontalAlignment="Center">
+                            <ListView x:Name="CroissantsLV" ItemsSource="{Binding Croissants}" SelectedItem="{Binding SelectedCroissant}" BorderThickness="0" HorizontalAlignment="Center" SelectionMode="Single">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <!-- The only difficulty here is to set the good DataContext. We use the data context of "PetitsPainsWindow", the x:Name we gave to the Window. -->
+                                        <!-- What happen here? The selected item in the Lines collection is not set when an item is selected in the Croissants collection, -->
+                                        <!-- so we do it with a command. -->
+                                        <i:InvokeCommandAction Command="{Binding ElementName=PetitsPainsWindow, Path= DataContext.SelectLineCommand}" CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Background="Transparent" Orientation="Horizontal" />
@@ -104,12 +115,36 @@
                             </ListView>
                         </StackPanel>
                         <!-- TODO: change the image of the button; say, a croissant with a "+" on overlay -->
+                        <!-- TODO: set the command with a cleaner method; see how it's done for the TextBlocks showing the selected line -->
                         <Button x:Name="AddPenaltyBtn" Grid.Column="2" Content="+" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AddPenaltyCommand}" CommandParameter="{Binding}" HorizontalAlignment="Center" Height="25" Width="25" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <DockPanel Margin="10" Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Margin="10, 5, 0, 5" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding ElementName=LinesOfCroissantsLV, Path=SelectedItem.Person}" />
+            <TextBlock Grid.Column="1" Margin="30, 0, 0, 0" Text="{Binding ElementName=PetitsPainsWindow, Path=DataContext.SelectedLine.SelectedCroissant.Date, StringFormat=d}">
+                <!-- TODO: find a way to set the DataContext of the TextBlock to SelectedCroissant. -->
+                <!-- Once it's done, set the text for the 3 states. -->
+                <!--<TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding State}" Value="{x:Static model:Croissant+CroissantState.IsAvailable}">
+                                <Setter Property="Text" Value="Cet emplacement est vide." />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>-->
+            </TextBlock>
+            <!-- Show the croissant date and a button to delete the penalty. The button should be binded to the RemovePenaltyCommand. -->
+            <!-- See https://stackoverflow.com/questions/8279782/how-to-passing-multiple-parameters-relaycommand in order to do that. -->
+            <!-- The height of the row should be set to 45 when a croissant is selected and 0 when nothing is. -->
+        </Grid>
+        <DockPanel Margin="10, 5, 10, 5" Grid.Row="4">
             <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" HorizontalAlignment="Right" />
         </DockPanel>
     </Grid>

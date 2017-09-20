@@ -17,3 +17,14 @@ C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\PetitsPains.csproj.
 C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\PetitsPains.csproj.CoreCompileInputs.cache
 C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\PetitsPains.exe
 C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\PetitsPains.pdb
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\System.Windows.Interactivity.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\de\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\en\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\es\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\it\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
