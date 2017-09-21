@@ -31,12 +31,12 @@ namespace PetitsPains.Converter
             if ((parameter == null) || ((NullToBoolDirection)parameter == NullToBoolDirection.NullIsFalse))
             {
                 // Null means "false", or the conversion direction provided is null
-                return value == null;
+                return value != null;
             }
             else
             {
                 // Null means "true"
-                return value != null;
+                return value == null;
             }
         }
 

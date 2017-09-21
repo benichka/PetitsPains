@@ -24,7 +24,22 @@
             <RowDefinition Height="70" />
             <RowDefinition Height="45" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="45" />
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <!-- The row is collapsed by default. It shows only when a croissant is selected. -->
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="True">
+                                <Setter Property="Height" Value="45" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="False">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <Grid Margin="10" Grid.Row="0">
@@ -125,27 +140,56 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding ElementName=LinesOfCroissantsLV, Path=SelectedItem.Person}" />
-            <TextBlock Grid.Column="1" Margin="30, 0, 0, 0" Text="{Binding ElementName=PetitsPainsWindow, Path=DataContext.SelectedLine.SelectedCroissant.Date, StringFormat=d}">
-                <!-- TODO: find a way to set the DataContext of the TextBlock to SelectedCroissant. -->
+            <TextBlock Grid.Column="1" Margin="30, 0, 0, 0" DataContext="{Binding ElementName=PetitsPainsWindow, Path=DataContext.SelectedLine.SelectedCroissant}">
                 <!-- Once it's done, set the text for the 3 states. -->
-                <!--<TextBlock.Style>
+                <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding State}" Value="{x:Static model:Croissant+CroissantState.IsAvailable}">
                                 <Setter Property="Text" Value="Cet emplacement est vide." />
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding State}" Value="{x:Static model:Croissant+CroissantState.IsUsed}">
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <Binding Path="Date" StringFormat="The date is {0:d}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding State}" Value="{x:Static model:Croissant+CroissantState.IsDeactivated}">
+                                <Setter Property="Text" Value="Cet emplacement n'est pas disponible." />
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>-->
+                </TextBlock.Style>
             </TextBlock>
-            <!-- Show the croissant date and a button to delete the penalty. The button should be binded to the RemovePenaltyCommand. -->
+            <!-- TODO: The button should be binded to the RemovePenaltyCommand. -->
             <!-- See https://stackoverflow.com/questions/8279782/how-to-passing-multiple-parameters-relaycommand in order to do that. -->
-            <!-- The height of the row should be set to 45 when a croissant is selected and 0 when nothing is. -->
+            <Button x:Name="RemovePenaltyBtn" Grid.Column="2" Margin="10, 0, 10, 0" Width="80" HorizontalAlignment="Right">
+                <TextBlock TextWrapping="Wrap">
+                    Retirer la pénalité
+                </TextBlock>
+                <Button.Style>
+                    <!-- We can't directly use the Visibility property of the button because when a line is not selected, SelectedCroissant -->
+                    <!-- is not accessible -> the binding doesn't happen and the button is visible. -->
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
         <DockPanel Margin="10, 5, 10, 5" Grid.Row="4">
-            <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" HorizontalAlignment="Right" />
+            <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" Width="80" HorizontalAlignment="Right" />
         </DockPanel>
     </Grid>
 </Window>

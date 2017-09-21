@@ -403,6 +403,10 @@ namespace PetitsPains.ViewModel
             ManageFilesOnPathChanged();
         }
 
+        // TODO: create a button, for instance "send report".
+        // - generate a mail with Outlook displaying the table as it looks like in the application ;
+        // - if someone has to bring the croissants, tell it.
+
         /// <summary>
         /// Checks if every command is executable.
         /// </summary>
