@@ -3,25 +3,15 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
 using PetitsPains.Command;
 using PetitsPains.Data;
 using PetitsPains.Model;
+using PetitsPains.View;
 
 namespace PetitsPains.ViewModel
 {
-    /// <summary>
-    /// Technical object used as a parameter for removing a penalty.
-    /// </summary>
-    public class RemovePenaltyParameter
-    {
-        /// <summary>Line where the croissant to remove is located.</summary>
-        public Line Line { get; set; }
-
-        /// <summary>Croissant to remove penalty from.</summary>
-        public Croissant Croissant { get; set; }
-    }
-
     /// <summary>
     /// View model for the MainWindow view
     /// </summary>
@@ -37,10 +27,11 @@ namespace PetitsPains.ViewModel
             {
                 SetProperty(CheckCommands, ref this._Lines, value);
 
-                // Subscribe to each PenaltyAlreadyExistsAtThisDate.
+                // Subscribe to each event that the line can raise.
                 foreach (var line in this._Lines)
                 {
                     line.PenaltyAlreadyExistsAtThisDate += HandlePenaltyAlreadyExistsAtThisDate;
+                    line.PropertyChanged += HandleLinePropertyChanded;
                 }
             }
         }
@@ -131,11 +122,20 @@ namespace PetitsPains.ViewModel
         /// <summary>Command associated with the button to add a penalty to a line.</summary>
         public CommandHandler<Line> AddPenaltyCommand { get; private set; }
 
-        /// <summary>Command associated with the button to remove a penalty to a line.</summary>
-        public CommandHandler<RemovePenaltyParameter> RemovePenaltyCommand { get; private set; }
+        /// <summary>Command associated with the button to remove a penalty from a line.</summary>
+        public CommandHandler RemovePenaltyCommand { get; private set; }
+
+        /// <summary>Command associated with the button to activate a croissant.</summary>
+        public CommandHandler ActivateCroissantCommand { get; set; }
 
         /// <summary>Command to select a line.</summary>
         public CommandHandler<Line> SelectLineCommand { get; private set; }
+
+        /// <summary>Command to remove a line.</summary>
+        public CommandHandler<Line> RemoveLineCommand { get; private set; }
+
+        /// <summary>Command to add a line.</summary>
+        public CommandHandler AddLineCommand { get; set; }
 
         /// <summary>Command associated with the validate button.</summary>
         public CommandHandler SaveCommand { get; private set; }
@@ -155,9 +155,15 @@ namespace PetitsPains.ViewModel
 
             AddPenaltyCommand = new CommandHandler<Line>(AddPenalty, () => true);
 
-            RemovePenaltyCommand = new CommandHandler<RemovePenaltyParameter>(RemovePenalty, CanRemovePenalty);
+            RemovePenaltyCommand = new CommandHandler(RemovePenalty, CanRemovePenalty);
+
+            ActivateCroissantCommand = new CommandHandler(ActivateCroissant, CanActivateCroissant);
 
             SelectLineCommand = new CommandHandler<Line>((line) => SelectedLine = line, () => true);
+
+            RemoveLineCommand = new CommandHandler<Line>(RemoveLine, () => true);
+
+            AddLineCommand = new CommandHandler(AddLine, () => true);
 
             // The Save button can not be clicked if the path is empty.
             SaveCommand = new CommandHandler(Save, () => !String.IsNullOrWhiteSpace(RootPath));
@@ -186,6 +192,17 @@ namespace PetitsPains.ViewModel
         private void HandlePenaltyAlreadyExistsAtThisDate(object sender, EventArgs e)
         {
             InformationMessage = String.Format("{0} a déjà une pénalité en date du {1}.", (sender as Line).Person.FirstName, ProcessedDate.ToString("d", CultureInfo.CurrentCulture));
+        }
+
+        /// <summary>
+        /// Event handling for the event PropertyChanged of a line.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments.</param>
+        private void HandleLinePropertyChanded(object sender, EventArgs e)
+        {
+            // When the line changes, we need to re-check our commands
+            CheckCommands();
         }
 
         /// <summary>
@@ -227,7 +244,7 @@ namespace PetitsPains.ViewModel
         /// </summary>
         private void SelectRootPathFolder()
         {
-            // TODO: see if that fits the MVVM pattern.
+            // TODO: call the folder browser dialog using the MVVM pattern.
 
             var fbd = new FolderBrowserDialog();
 
@@ -299,20 +316,27 @@ namespace PetitsPains.ViewModel
 
             // Add the penalty to the line.
             line.AddPenalty(ProcessedDate);
+
+            // Check the commands: they state can change due to the added penalty.
+            CheckCommands();
         }
 
         /// <summary>
         /// Removes a penalty sets on a croissant.
         /// </summary>
-        /// <param name="parameter">The parameter containing information about the line and the croissant to remove the penalty from.</param>
-        private void RemovePenalty(RemovePenaltyParameter parameter)
+        private void RemovePenalty()
         {
-            parameter.Line.RemovePenalty(parameter.Croissant.Date.Value);
-            // TODO: RemovePenalty: manage a RemovePenaltyCommand
-            // -> instanciation, add to CheckCommands, manage it in the view.
+            if (SelectedLine != null && SelectedLine.SelectedCroissant != null)
+            {
+                SelectedLine.RemovePenalty(SelectedLine.SelectedCroissant.Date.Value);
+            }
+            else
+            {
+                InformationMessage = "Impossible de supprimer une pénalité inexistante.";
+            }
 
-
-            // Add a "SelectedLine" in the view model and use it? -> remove the line in the method parameter
+            // Check the commands: they state can change due to the added penalty.
+            CheckCommands();
         }
 
         /// <summary>
@@ -320,13 +344,52 @@ namespace PetitsPains.ViewModel
         /// </summary>
         private bool CanRemovePenalty()
         {
-            // TODO: implement CanRemovePenalty
-            // We need to pass a RemovePenaltyParameter to access the line. Or, use the selected line. 1st option
-            // seems better.
-            // The command must be deactivated if a penalty exists on the Friday of the week, because
-            // the logic on Friday changes (a person can have 1, 2 or 3 penalties on this day).
+            if (SelectedLine != null && SelectedLine.SelectedCroissant != null)
+            {
+                return SelectedLine.SelectedCroissant.State == Croissant.CroissantState.IsUsed;
+            }
+            else
+            {
+                return false;
+            }
+            // TODO: Eventually, better implementation of CanRemovePenalty.
+            // Why? If a penalty exists on the Friday of the week, a person can have 1, 2 or 3 penalties on this day.
+            // Removal of penalties can have unsuspected consequences.
+            // See with the implementation of Line.RemovePenalty to make this coherent.
+        }
 
-            return true;
+        /// <summary>
+        /// Activates a croissant that is deactivated.
+        /// </summary>
+        private void ActivateCroissant()
+        {
+            if (SelectedLine != null && SelectedLine.SelectedCroissant != null)
+            {
+                SelectedLine.ReactivatedCroissant(SelectedLine.SelectedCroissant);
+            }
+            else
+            {
+                InformationMessage = "Impossible de gérer une pénalité inexistante.";
+            }
+
+            // Check the commands: they state can change due to the activated croissant.
+            CheckCommands();
+        }
+
+        /// <summary>
+        /// Checks if the ActivateCroissantCommand can be executed.
+        /// </summary>
+        /// <returns>True if that's the case, false otherwise.</returns>
+        private bool CanActivateCroissant()
+        {
+            if (SelectedLine != null && SelectedLine.SelectedCroissant != null)
+            {
+                return SelectedLine.SelectedCroissant.State == Croissant.CroissantState.IsDeactivated;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -354,27 +417,41 @@ namespace PetitsPains.ViewModel
         }
 
         /// <summary>
-        /// The user wants to add a person.
+        /// The user wants to add a line.
         /// </summary>
-        private void AddPerson()
+        private void AddLine()
         {
-            // TODO: implement AddPerson and add a button to add a person in the XAML
-            // -> probably with a new screen that prompt the user firstname and lastname
-            // -> this action will always be available, so the command associated must be
-            // set to true for methodToDetermineCanExecute
-            throw new NotImplementedException();
+            // TODO: call a dialog using the MVVM pattern to add a line.
+
+            AddPersonWindow addPersonView = new AddPersonWindow(Lines);
+            var result = addPersonView.ShowDialog();
+
+            // Do not forget to subscribe to line.PenaltyAlreadyExistsAtThisDate and
+            // line.PropertyChanged.
+            if (result.HasValue && result.Value)
+            {
+                // If a person has been added, their are located at the end of the list
+                Lines.Last().PenaltyAlreadyExistsAtThisDate += HandlePenaltyAlreadyExistsAtThisDate;
+                Lines.Last().PropertyChanged += HandleLinePropertyChanded;
+            }
         }
 
         /// <summary>
-        /// The user wants to remove a person.
+        /// The user wants to remove a line.
         /// </summary>
-        /// <param name="person">Person to remove.</param>
-        private void RemovePerson(Person person)
+        /// <param name="line">Line to remove.</param>
+        private void RemoveLine(Line line)
         {
-            // TODO: implement RemovePerson and add a button to remove a person in the XAML
-            // -> this action will always be available, so the command associated must be
-            // set to true for methodToDetermineCanExecute
-            throw new NotImplementedException();
+            // TODO: call a dialog using the MVVM pattern to confirm the line removal.
+            string msgtext = String.Format("Voulez vous supprimer la ligne pour {0} ?", line.Person.ToString());
+            string txt = "Confirmer la suppression";
+            MessageBoxButton button = MessageBoxButton.YesNoCancel;
+
+            MessageBoxResult result = System.Windows.MessageBox.Show(msgtext, txt, button, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                Lines.Remove(line);
+            }
         }
 
         /// <summary>
@@ -416,6 +493,7 @@ namespace PetitsPains.ViewModel
             LoadFileCommand.RaiseCanExecuteChanged();
             AddPenaltyCommand.RaiseCanExecuteChanged();
             RemovePenaltyCommand.RaiseCanExecuteChanged();
+            ActivateCroissantCommand.RaiseCanExecuteChanged();
             SelectLineCommand.RaiseCanExecuteChanged();
             SaveCommand.RaiseCanExecuteChanged();
         }

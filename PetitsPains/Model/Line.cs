@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using PetitsPains.Enums;
@@ -12,7 +14,7 @@ namespace PetitsPains.Model
     /// Represents a line that contains information about a person.
     /// </summary>
     [Serializable]
-    public class Line : ISerializable
+    public class Line : ISerializable, INotifyPropertyChanged
     {
         #region properties
         /// <summary>Person for the line.</summary>
@@ -21,8 +23,16 @@ namespace PetitsPains.Model
         /// <summary>List of croissants for the person.</summary>
         public ObservableCollection<Croissant> Croissants { get; set; }
 
+        private Croissant _SelectedCroissant;
         /// <summary>Selected croissant in the Croissants collection.</summary>
-        public Croissant SelectedCroissant { get; set; }
+        public Croissant SelectedCroissant
+        {
+            get { return this._SelectedCroissant; }
+            set
+            {
+                SetProperty(ref this._SelectedCroissant, value);
+            }
+        }
 
         private readonly int _CroissantsSlots;
         /// <summary>Maximum croissants slots.</summary>
@@ -205,10 +215,16 @@ namespace PetitsPains.Model
                 croissant.Date = null;
             }
 
-            // TODO: finish the implementation of the removal of a penalty.
-
             // Sort the list of croissant to put the gaps to the right of the collection
             Croissants.BubbleSort(SortDirection.Ascending);
+
+            // TODO: Eventually, improve the removal of a penalty.
+            // Right now, it is very simple: delete all penalty at this date. But it can have
+            // consequences, especially it we remove a penalty on friday: 2 croissants are removed,
+            // or 3 if the person didn't submit their CRA the whole week.
+            // Plus, if we remove a penalty in the week and the person already has a penalty on friday
+            // and didn't submit their CRA the rest of the week, the added "foutage de gueule" croissant
+            // need to be remove.
         }
 
         /// <summary>
@@ -347,6 +363,19 @@ namespace PetitsPains.Model
             return date.AddDays(offset).Date;
         }
 
+        /// <summary>
+        /// Reactivate a croissant that has been deactivated.
+        /// </summary>
+        /// <param name="croissant">Croissant to activate.</param>
+        public void ReactivatedCroissant(Croissant croissant)
+        {
+            var croissantToActivate = Croissants.FirstOrDefault(c => c == croissant);
+            if (croissantToActivate != null)
+            {
+                croissantToActivate.State = Croissant.CroissantState.IsAvailable;
+            }
+        }
+
         #region serialisation
         /// <summary>
         /// Deserialization constructor.
@@ -387,5 +416,44 @@ namespace PetitsPains.Model
             GetObjectData(info, context);
         }
         #endregion serialisation
+
+        #region event handling
+        /// <summary>Event handler.</summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises the changed property event.
+        /// </summary>
+        /// <param name="propertyName">Changed property.</param>
+        protected void RaisedPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            if (this.PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        /// <summary>
+        /// Field change notification only if the field has really changed.
+        /// </summary>
+        /// <typeparam name="T">Field type.</typeparam>
+        /// <param name="storage">Initial value.</param>
+        /// <param name="value">Updated value.</param>
+        /// <param name="propertyName">Property name.</param>
+        /// <returns>True if the field value changed, false otherwise.</returns>
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        {
+            if (Equals(storage, value))
+            {
+                return false;
+            }
+            else
+            {
+                storage = value;
+                RaisedPropertyChanged(propertyName);
+                return true;
+            }
+        }
+        #endregion event handling
     }
 }

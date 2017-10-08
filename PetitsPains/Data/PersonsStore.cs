@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Web.Script.Serialization;
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -133,49 +132,6 @@ namespace PetitsPains.Data
         }
 
         /// <summary>
-        /// Read the list of people from a file.
-        /// </summary>
-        /// <returns>List of people.</returns>
-        public static List<Person> ReadPersons()
-        {
-            List<Person> result = new List<Person>();
-            //TODO: JavaScriptSerializer doesn't handle date well. Use a proper JSON serializer.
-
-            // JavaScriptSerializer: simple serialization that serializes to JSON public fields and properties.
-            var jsSer = new JavaScriptSerializer();
-
-            using (var personsStream = File.OpenRead(Path.Combine(RootPath, DefaultPeopleFileName)))
-            {
-                byte[] personsAsBytes = new byte[(int)personsStream.Length];
-                personsStream.Read(personsAsBytes, 0, (int)personsAsBytes.Length);
-
-                result = jsSer.Deserialize<List<Person>>(System.Text.Encoding.UTF8.GetString(personsAsBytes));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Write the list of people to a file.
-        /// </summary>
-        /// <param name="persons">List of people to write to a file.</param>
-        public static void WritePersons(List<Person> persons)
-        {
-            //TODO: JavaScriptSerializer doesn't handle date well. Use a proper JSON serializer.
-
-            // JavaScriptSerializer: simple serialization that serializes to JSON public fields and properties.
-            var jsSer = new JavaScriptSerializer();
-
-            using (var personsStream = File.Open(Path.Combine(RootPath, DefaultPeopleFileName), FileMode.Create))
-            {
-                var personsAsText = jsSer.Serialize(persons);
-
-                byte[] personsAsBytes = new UTF8Encoding(true).GetBytes(personsAsText);
-                personsStream.Write(personsAsBytes, 0, personsAsBytes.Length);
-            }
-        }
-
-        /// <summary>
         /// Write the list of lines of croissants to a file.
         /// </summary>
         /// <param name="croissantLines">List of Line of croissants.</param>
@@ -184,6 +140,7 @@ namespace PetitsPains.Data
             var jsonSer = new JsonSerializer();
             jsonSer.Converters.Add(new IsoDateTimeConverter() {Culture = CultureInfo.InvariantCulture });
             jsonSer.NullValueHandling = NullValueHandling.Include;
+            jsonSer.Formatting = Newtonsoft.Json.Formatting.Indented;
 
             StreamWriter sw = null;
             try
@@ -234,61 +191,47 @@ namespace PetitsPains.Data
         }
 
         /// <summary>
-        /// Default list of people.
+        /// Read the list of people from a file.
         /// </summary>
+        /// <returns>List of people.</returns>
+        private static List<Person> ReadPersons()
+        {
+            var filePath = Path.Combine(RootPath, DefaultPeopleFileName);
+
+            List<Person> result = new List<Person>();
+
+            // The file might not be there.
+            if (File.Exists(filePath))
+            {
+                var jsonSer = new JsonSerializer();
+                jsonSer.NullValueHandling = NullValueHandling.Include;
+
+                using (StreamReader sr = File.OpenText(filePath))
+                {
+                    result = jsonSer.Deserialize(sr, typeof(List<Person>)) as List<Person>;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get the default list of people and return a list of lines containing them.
+        /// </summary>
+        /// <returns>List of lines containing the default people.</returns>
         private static List<Line> GetDefaultPeople()
         {
-            // TODO: the default people can be retrieved from a file.
+            List<Person> persons = ReadPersons();
 
             var result = new List<Line>();
 
-            result.Add(new Line()
+            foreach (var person in persons)
+            {
+                result.Add(new Line()
                 {
-                    Person = new Person("Adrien", "Finck")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Benoit", "Masson-Bedeau")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Cédric", "Kuntz")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Florian", "Krem")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Gwenaël", "Maillot")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Kévin", "Rei-Bento")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Nelly", "Moog")
-                }
-            );
-
-            result.Add(new Line()
-                {
-                    Person = new Person("Romaine", "Weber")
-                }
-            );
+                    Person = person
+                });
+            }
 
             return result;
         }
