@@ -273,8 +273,11 @@ namespace PetitsPains.Model
             // The default number is 1
             var penaltiesToAdd = 1;
 
-            // If the person forgot to submit their CRA on friday, 2 penalties are added.
-            if (date.DayOfWeek == DayOfWeek.Friday)
+            // If the day is Friday and the person forgot to submit their CRA at least
+            // one day during the week or if the day is Monday and the person forgot to
+            // submit their CRA at least one day during last week, 2 penalties are added.
+            if ((date.DayOfWeek == DayOfWeek.Friday && CheckAtLeastOnePenaltyThisWeek(date)) ||
+                (date.DayOfWeek == DayOfWeek.Monday && CheckAtLeastOnePenaltyLastWeek(date)))
             {
                 penaltiesToAdd = 2;
             }
@@ -289,10 +292,60 @@ namespace PetitsPains.Model
         }
 
         /// <summary>
+        /// Checks if the person forgot to submit their CRA at least one time in the week.
+        /// </summary>
+        /// <param name="date">Date to set the penalty on.</param>
+        /// <returns>True if that's the case, false otherwise.</returns>
+        private bool CheckAtLeastOnePenaltyThisWeek(DateTime date)
+        {
+            // The person is considered innocent.
+            var result = false;
+
+            DateTime firstDayOfProcessedWeek = FirstDayOfProcessedWeek(date);
+
+            // We only check the "standards" working days => from Monday to Friday.
+            DateTime dayToCheck = firstDayOfProcessedWeek;
+
+            for (int i = 0; i < 5; i++)
+            {
+                // Check if this day has at least one penalty.
+                var penaltiesForThisDay = (from Croissant c in Croissants
+                                           where c.Date.HasValue && c.Date.Value == dayToCheck && c.State != Croissant.CroissantState.IsDeactivated
+                                           select c).Count();
+
+                if (penaltiesForThisDay > 0)
+                {
+                    result = true;
+
+                    // No need to check further as long as the person omitted to submit their CRA at least one time in the week.
+                    break;
+                }
+
+                dayToCheck = dayToCheck.AddDays(1);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks if the person forgot to submit their CRA at least one time in the last week.
+        /// </summary>
+        /// <param name="date">Date to set the penalty on.</param>
+        /// <returns>True if that's the case, false otherwise.</returns>
+        private bool CheckAtLeastOnePenaltyLastWeek(DateTime date)
+        {
+            // We simply call the CheckAtLeastOnePenaltyThisWeek method with the first
+            // day of the last week as parameter.
+            DateTime firstDayOfLastWeek = FirstDayOfProcessedWeek(date).AddDays(-7);
+
+            return CheckAtLeastOnePenaltyThisWeek(firstDayOfLastWeek);
+        }
+
+        /// <summary>
         /// Checks if a person forgot to submit their CRA the whole week.
         /// </summary>
         /// <param name="date">Date to set the penalty on.</param>
-        /// <returns>True if that's the case</returns>
+        /// <returns>True if that's the case, false otherwise.</returns>
         private bool CheckFoutageDeGueule(DateTime date)
         {
             // The person is considered guilty!
@@ -300,13 +353,13 @@ namespace PetitsPains.Model
 
             DateTime firstDayOfProcessedWeek = FirstDayOfProcessedWeek(date);
 
-            // We only check the "standard" working days => from Monday to Friday.
+            // We only check the "standards" working days => from Monday to Friday.
             // Therefore, if the person already has penalties from Monday to Thursday,
-            // it means that we are currently adding a penalty for friday.
+            // it means that we are currently adding a penalty for Friday. -> we only
+            // need to check from Monday (0) to Thursday (3).
             DateTime dayToCheck = firstDayOfProcessedWeek;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
-                dayToCheck = dayToCheck.AddDays(i);
                 // If at least one day of the week is not in the dates, the person doesn't get the additional penalty
                 var penaltiesForThisDay = (from Croissant c in Croissants
                              where c.Date.HasValue && c.Date.Value == dayToCheck && c.State != Croissant.CroissantState.IsDeactivated
@@ -319,16 +372,18 @@ namespace PetitsPains.Model
                     // No need to check further as long as the person submitted his CRA at least one day in this week
                     break;
                 }
+
+                dayToCheck = dayToCheck.AddDays(1);
             }
 
             return result;
         }
 
         /// <summary>
-        /// Returns the first day (monday) of the week of the processed date.
+        /// Returns the first day (Monday) of the week of the processed date.
         /// </summary>
         /// <param name="date">Processed date.</param>
-        /// <returns>The first day (monday) of the week of the processed date.</returns>
+        /// <returns>The first day (Monday) of the week of the processed date.</returns>
         private DateTime FirstDayOfProcessedWeek(DateTime date)
         {
             var offset = 0;
