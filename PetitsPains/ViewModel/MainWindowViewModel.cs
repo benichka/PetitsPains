@@ -32,6 +32,7 @@ namespace PetitsPains.ViewModel
                 {
                     line.PenaltyAlreadyExistsAtThisDate += HandlePenaltyAlreadyExistsAtThisDate;
                     line.PropertyChanged += HandleLinePropertyChanded;
+                    line.PersonChanged += HandleLinePersonChanded;
                 }
             }
         }
@@ -134,6 +135,9 @@ namespace PetitsPains.ViewModel
         /// <summary>Command to remove a line.</summary>
         public CommandHandler<Line> RemoveLineCommand { get; private set; }
 
+        /// <summary>Command to update a person in a line.</summary>
+        public CommandHandler<Line> UpdateLineCommand { get; set; }
+
         /// <summary>Command to add a line.</summary>
         public CommandHandler AddLineCommand { get; set; }
 
@@ -162,6 +166,8 @@ namespace PetitsPains.ViewModel
             SelectLineCommand = new CommandHandler<Line>((line) => SelectedLine = line, () => true);
 
             RemoveLineCommand = new CommandHandler<Line>(RemoveLine, () => true);
+
+            UpdateLineCommand = new CommandHandler<Line>(UpdateLine, () => true);
 
             AddLineCommand = new CommandHandler(AddLine, () => true);
 
@@ -203,6 +209,18 @@ namespace PetitsPains.ViewModel
         {
             // When the line changes, we need to re-check our commands
             CheckCommands();
+        }
+
+        /// <summary>
+        /// Event handling for the event PersonChanged of a line.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments.</param>
+        private void HandleLinePersonChanded(object sender, EventArgs e)
+        {
+            // TODO: to update the UI, the ObservableCollection must raise CollectionChanged when a Person changed.
+            // See https://www.codeproject.com/tips/694370/how-to-listen-to-property-chang or
+            // https://stackoverflow.com/questions/8490533/notify-observablecollection-when-item-changes
         }
 
         /// <summary>
@@ -452,6 +470,17 @@ namespace PetitsPains.ViewModel
             {
                 Lines.Remove(line);
             }
+        }
+
+        /// <summary>
+        /// The user wants to update a line.
+        /// </summary>
+        /// <param name="line">Line to update.</param>
+        private void UpdateLine(Line line)
+        {
+            // TODO: call a dialog using the MVVM pattern to update the line.
+            UpdatePersonWindow updatePersonWindow = new UpdatePersonWindow(SelectedLine);
+            var result = updatePersonWindow.ShowDialog();
         }
 
         /// <summary>

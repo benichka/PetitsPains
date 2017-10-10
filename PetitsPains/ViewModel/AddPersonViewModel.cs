@@ -45,6 +45,17 @@ namespace PetitsPains.ViewModel
             }
         }
 
+        private string _PersoId;
+        /// <summary>PersoId for the person to add.</summary>
+        public string PersoId
+        {
+            get { return this._PersoId; }
+            set
+            {
+                SetProperty(CheckCommands, ref this._PersoId, value);
+            }
+        }
+
         private string _EMail;
         /// <summary>Email for the person to add.</summary>
         public string EMail
@@ -88,7 +99,7 @@ namespace PetitsPains.ViewModel
             var personInList = Lines.FirstOrDefault(l => l.Person.FirstName.Equals(FirstName) && l.Person.LastName.Equals(LastName));
             if (personInList == null)
             {
-                Lines.Add(new Line() { Person = new Person(FirstName, LastName, EMail) });
+                Lines.Add(new Line() { Person = new Person(FirstName, LastName, PersoId, EMail) });
             }
 
             // Close the window

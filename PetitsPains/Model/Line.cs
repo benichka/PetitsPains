@@ -17,8 +17,17 @@ namespace PetitsPains.Model
     public class Line : ISerializable, INotifyPropertyChanged
     {
         #region properties
+        private Person _Person;
         /// <summary>Person for the line.</summary>
-        public Person Person { get; set; }
+        public Person Person
+        {
+            get { return this._Person; }
+            set
+            {
+                SetProperty(ref this._Person, value);
+                this._Person.PropertyChanged += HandlePersonChanged;
+            }
+        }
 
         /// <summary>List of croissants for the person.</summary>
         public ObservableCollection<Croissant> Croissants { get; set; }
@@ -60,6 +69,12 @@ namespace PetitsPains.Model
         /// (when a penalty for this date already exists).
         /// </summary>
         public event PenaltyAlreadyExistsAtThisDateHandler PenaltyAlreadyExistsAtThisDate;
+
+        /// <summary>Handler for the PersonChanged event.</summary>
+        public delegate void PersonChangedHandler(object sender, EventArgs e);
+
+        /// <summary>Event raised when the person changed.</summary>
+        public event PersonChangedHandler PersonChanged;
         #endregion events and delegates
 
         #region constructors
@@ -471,6 +486,19 @@ namespace PetitsPains.Model
             GetObjectData(info, context);
         }
         #endregion serialisation
+
+        /// <summary>
+        /// Event handling for the event PropertyChanged of the person.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments.</param>
+        private void HandlePersonChanged(object sender, EventArgs e)
+        {
+            if (PersonChanged != null)
+            {
+                PersonChanged(this, EventArgs.Empty);
+            }
+        }
 
         #region event handling
         /// <summary>Event handler.</summary>

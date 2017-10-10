@@ -29,5 +29,6 @@ C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\zh-Hans\System.Wind
 C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\View\AddPersonWindow.g.cs
 C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\View\AddPersonWindow.baml
-C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\PetitsPains.exe.CodeAnalysisLog.xml
-C:\00 - Data\programmation\PetitsPains\PetitsPains\bin\Debug\PetitsPains.exe.lastcodeanalysissucceeded
+C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\View\UpdatePersonWindow.g.cs
+C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\View\UpdatePersonWindow.baml
+C:\00 - Data\programmation\PetitsPains\PetitsPains\obj\Debug\PetitsPains.csprojResolveAssemblyReference.cache

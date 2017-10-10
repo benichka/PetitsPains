@@ -3,6 +3,7 @@
     "Person": {
       "FirstName": "Adrien",
       "LastName": "Finck",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -53,6 +54,7 @@
     "Person": {
       "FirstName": "Benoit",
       "LastName": "Masson-Bedeau",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -103,6 +105,7 @@
     "Person": {
       "FirstName": "Cédric",
       "LastName": "Kuntz",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -153,6 +156,7 @@
     "Person": {
       "FirstName": "Florian",
       "LastName": "Krem",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -203,6 +207,7 @@
     "Person": {
       "FirstName": "Gwenaël",
       "LastName": "Maillot",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -253,6 +258,7 @@
     "Person": {
       "FirstName": "Kévin",
       "LastName": "Rei-Bento",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -303,6 +309,7 @@
     "Person": {
       "FirstName": "Nelly",
       "LastName": "Moog",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [
@@ -353,6 +360,7 @@
     "Person": {
       "FirstName": "Romaine",
       "LastName": "Weber",
+      "PersoId": null,
       "Email": null
     },
     "Croissants": [

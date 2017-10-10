@@ -2,41 +2,49 @@
   {
     "FirstName": "Adrien",
     "LastName": "Finck",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Benoit",
     "LastName": "Masson-Bedeau",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Cédric",
     "LastName": "Kuntz",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Florian",
     "LastName": "Krem",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Gwenaël",
     "LastName": "Maillot",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Kévin",
     "LastName": "Rei-Bento",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Nelly",
     "LastName": "Moog",
+	"PersoId": null,
     "Email": null
   },
   {
     "FirstName": "Romaine",
     "LastName": "Weber",
+	"PersoId": null,
     "Email": null
   }
 ]

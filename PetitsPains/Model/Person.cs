@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
@@ -8,19 +10,51 @@ namespace PetitsPains.Model
     /// Represents a person.
     /// </summary>
     [Serializable]
-    public class Person : ISerializable, IComparable<Person>
+    public class Person : ISerializable, IComparable<Person>, INotifyPropertyChanged
     {
+        private string _FirstName;
         /// <summary>First name.</summary>
-        public string FirstName { get; set; }
+        public string FirstName
+        {
+            get { return this._FirstName; }
+            set
+            {
+                SetProperty(ref this._FirstName, value);
+            }
+        }
 
+        private string _LastName;
         /// <summary>Last name.</summary>
-        public string LastName { get; set; }
+        public string LastName
+        {
+            get { return this._LastName; }
+            set
+            {
+                SetProperty(ref this._LastName, value);
+            }
+        }
 
-        /// <summary>PersoID; usually a combination of first name + last name.</summary>
-        public string PersoID { get; set; }
+        private string _PersoId;
+        /// <summary>PersoId; usually a combination of first name + last name.</summary>
+        public string PersoId
+        {
+            get { return this._PersoId; }
+            set
+            {
+                SetProperty(ref this._PersoId, value);
+            }
+        }
 
+        private string _Email;
         /// <summary>Email.</summary>
-        public string Email { get; set; }
+        public string Email
+        {
+            get { return this._Email; }
+            set
+            {
+                SetProperty(ref this._Email, value);
+            }
+        }
 
         /// <summary>
         /// Default constructor, needed for a JavascriptSerializer.
@@ -55,6 +89,21 @@ namespace PetitsPains.Model
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="firstName">Person's first name.</param>
+        /// <param name="lastName">Person's last name.</param>
+        /// <param name="persoId">Person's persoId.</param>
+        /// <param name="email">Person's email.</param>
+        public Person(string firstName, string lastName, string persoId, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PersoId = persoId;
+            Email = email;
+        }
+
+        /// <summary>
         /// Represents a person as a string.
         /// </summary>
         /// <returns>The person as a string.</returns>
@@ -72,6 +121,7 @@ namespace PetitsPains.Model
         {
             FirstName = info.GetValue("FirstName", typeof(string)) as string;
             LastName = info.GetValue("LastName", typeof(string)) as string;
+            PersoId = info.GetValue("PersoId", typeof(string)) as string;
             Email = info.GetValue("Email", typeof(string)) as string;
         }
 
@@ -85,6 +135,7 @@ namespace PetitsPains.Model
         {
             info.AddValue("FirstName", FirstName);
             info.AddValue("LastName", LastName);
+            info.AddValue("PersoId", PersoId);
             info.AddValue("Email", Email);
         }
 
@@ -111,5 +162,44 @@ namespace PetitsPains.Model
         {
             return FirstName.CompareTo(other.FirstName);
         }
+
+        #region event handling
+        /// <summary>Event handler.</summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises the changed property event.
+        /// </summary>
+        /// <param name="propertyName">Changed property.</param>
+        protected void RaisedPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            if (this.PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        /// <summary>
+        /// Field change notification only if the field has really changed.
+        /// </summary>
+        /// <typeparam name="T">Field type.</typeparam>
+        /// <param name="storage">Initial value.</param>
+        /// <param name="value">Updated value.</param>
+        /// <param name="propertyName">Property name.</param>
+        /// <returns>True if the field value changed, false otherwise.</returns>
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        {
+            if (Equals(storage, value))
+            {
+                return false;
+            }
+            else
+            {
+                storage = value;
+                RaisedPropertyChanged(propertyName);
+                return true;
+            }
+        }
+        #endregion event handling
     }
 }

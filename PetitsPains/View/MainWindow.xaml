@@ -92,7 +92,7 @@
         <ListView x:Name="LinesOfCroissantsLV" Grid.Row="2" Margin="10" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lines, Mode=TwoWay}" SelectedItem="{Binding SelectedLine}" SelectionMode="Single">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <!-- TODO: pop-up a window to ask for confirmation. -->
+                    <MenuItem Header="Modifier la personne..." Command="{Binding UpdateLineCommand}" CommandParameter="{Binding SelectedLine}" />
                     <MenuItem Header="Supprimer la personne..." Command="{Binding RemoveLineCommand}" CommandParameter="{Binding SelectedLine}" />
                 </ContextMenu>
             </ListView.ContextMenu>
