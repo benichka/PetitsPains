@@ -16,3 +16,5 @@ C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\obj\Debug\PetitsPainsTest
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\obj\Debug\PetitsPainsTest.csproj.CoreCompileInputs.cache
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\obj\Debug\PetitsPainsTest.dll
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\obj\Debug\PetitsPainsTest.pdb
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\PetitsPainsTest.dll.CodeAnalysisLog.xml
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\PetitsPainsTest.dll.lastcodeanalysissucceeded

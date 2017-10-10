@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>PetitsPains.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -166,6 +169,8 @@
   <ItemGroup>
     <Content Include="Assets\croissant_filled.svg" />
     <Content Include="Assets\croissant_greyed.svg" />
+    <Resource Include="PetitsPains.ico" />
+    <Resource Include="Assets\PetitsPains.ico" />
     <Resource Include="Assets\croissant_empty.png" />
     <Content Include="Assets\croissant_empty.svg" />
     <Resource Include="Assets\croissant_filled.png" />

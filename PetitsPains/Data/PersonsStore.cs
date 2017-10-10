@@ -48,7 +48,7 @@ namespace PetitsPains.Data
         {
             get
             {
-                return @"ListePersonnes.json";
+                return @"ListePersonnesDefaut.json";
             }
         }
 
@@ -115,19 +115,10 @@ namespace PetitsPains.Data
             };
 
             // Save the xml to the config file.
-            FileStream configStream = null;
-            try
+            using (FileStream configStream = File.Open(ConfigFilePath, FileMode.Create))
+            using (XmlWriter writer = XmlWriter.Create(configStream, settings))
             {
-                configStream = File.Open(ConfigFilePath, FileMode.Create);
-                using (XmlWriter writer = XmlWriter.Create(configStream, settings))
-                {
-                    xmlDoc.WriteContentTo(writer);
-                }
-            }
-            finally
-            {
-                if (configStream != null)
-                    configStream.Dispose();
+                xmlDoc.WriteContentTo(writer);
             }
         }
 
@@ -138,23 +129,14 @@ namespace PetitsPains.Data
         public static void WriteCroissantLines(List<Line> croissantLines)
         {
             var jsonSer = new JsonSerializer();
-            jsonSer.Converters.Add(new IsoDateTimeConverter() {Culture = CultureInfo.InvariantCulture });
+            jsonSer.Converters.Add(new IsoDateTimeConverter() { Culture = CultureInfo.InvariantCulture });
             jsonSer.NullValueHandling = NullValueHandling.Include;
             jsonSer.Formatting = Newtonsoft.Json.Formatting.Indented;
 
-            StreamWriter sw = null;
-            try
+            using (StreamWriter sw = new StreamWriter(Path.Combine(RootPath, CroissantLinesFileName), false))
+            using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                sw = new StreamWriter(Path.Combine(RootPath, CroissantLinesFileName), false);
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    jsonSer.Serialize(writer, croissantLines);
-                }
-            }
-            finally
-            {
-                if (sw != null)
-                    sw.Dispose();
+                jsonSer.Serialize(writer, croissantLines);
             }
         }
 
