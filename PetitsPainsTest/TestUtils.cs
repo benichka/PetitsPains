@@ -14,7 +14,7 @@ namespace PetitsPainsTest
     public class TestExtensions
     {
         // Create a collection and items to add to it to test the sorting methods.
-        ObservableCollection<Croissant> unorderedCollection;
+        ItemsChangeObservableCollection<Croissant> unorderedCollection;
         Croissant croissant1;
         Croissant croissant2;
         Croissant croissant3;
@@ -29,7 +29,7 @@ namespace PetitsPainsTest
         [TestInitialize]
         public void TestInit()
         {
-            unorderedCollection = new ObservableCollection<Croissant>();
+            unorderedCollection = new ItemsChangeObservableCollection<Croissant>();
 
             croissant1 = new Croissant(new DateTime(2017, 09, 05));
             croissant2 = new Croissant();
@@ -56,7 +56,7 @@ namespace PetitsPainsTest
         {
             bool result = false;
 
-            var sortedCollection = new ObservableCollection<Croissant>(unorderedCollection);
+            var sortedCollection = new ItemsChangeObservableCollection<Croissant>(unorderedCollection);
 
             sortedCollection.BubbleSort();
 
@@ -80,7 +80,7 @@ namespace PetitsPainsTest
         {
             bool result = false;
 
-            var sortedCollection = new ObservableCollection<Croissant>(unorderedCollection);
+            var sortedCollection = new ItemsChangeObservableCollection<Croissant>(unorderedCollection);
 
             sortedCollection.BubbleSort(SortDirection.Ascending);
 
@@ -103,7 +103,7 @@ namespace PetitsPainsTest
         {
             bool result = false;
 
-            var sortedCollection = new ObservableCollection<Croissant>(unorderedCollection);
+            var sortedCollection = new ItemsChangeObservableCollection<Croissant>(unorderedCollection);
 
             sortedCollection.BubbleSort(SortDirection.Descending);
 

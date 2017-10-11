@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using PetitsPains.Command;
 using PetitsPains.Data;
 using PetitsPains.Model;
+using PetitsPains.Utils;
 using PetitsPains.View;
 
 namespace PetitsPains.ViewModel
@@ -18,9 +19,9 @@ namespace PetitsPains.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         #region properties
-        private ObservableCollection<Line> _Lines;
+        private ItemsChangeObservableCollection<Line> _Lines;
         /// <summary>List of lines.</summary>
-        public ObservableCollection<Line> Lines
+        public ItemsChangeObservableCollection<Line> Lines
         {
             get { return this._Lines; }
             private set
@@ -32,7 +33,6 @@ namespace PetitsPains.ViewModel
                 {
                     line.PenaltyAlreadyExistsAtThisDate += HandlePenaltyAlreadyExistsAtThisDate;
                     line.PropertyChanged += HandleLinePropertyChanded;
-                    line.PersonChanged += HandleLinePersonChanded;
                 }
             }
         }
@@ -212,18 +212,6 @@ namespace PetitsPains.ViewModel
         }
 
         /// <summary>
-        /// Event handling for the event PersonChanged of a line.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event arguments.</param>
-        private void HandleLinePersonChanded(object sender, EventArgs e)
-        {
-            // TODO: to update the UI, the ObservableCollection must raise CollectionChanged when a Person changed.
-            // See https://www.codeproject.com/tips/694370/how-to-listen-to-property-chang or
-            // https://stackoverflow.com/questions/8490533/notify-observablecollection-when-item-changes
-        }
-
-        /// <summary>
         /// Checks if the target folder exists; if it doesn't, we create it.<para />
         /// This method also checks if the user has the right to write in the target folder.
         /// </summary>
@@ -320,7 +308,7 @@ namespace PetitsPains.ViewModel
         /// </summary>
         private void Load()
         {
-            Lines = new ObservableCollection<Line>(PersonsStore.ReadCroissantLines());
+            Lines = new ItemsChangeObservableCollection<Line>(PersonsStore.ReadCroissantLines());
         }
 
         /// <summary>

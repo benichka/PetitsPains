@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using PetitsPains.Command;
 using PetitsPains.Model;
+using PetitsPains.Utils;
 
 namespace PetitsPains.ViewModel
 {
@@ -12,9 +12,9 @@ namespace PetitsPains.ViewModel
     public class AddPersonViewModel : ViewModelBase
     {
         #region Properties
-        private ObservableCollection<Line> _Lines;
+        private ItemsChangeObservableCollection<Line> _Lines;
         /// <summary>Existing lines. The new person will be added to a new line in this list.</summary>
-        public ObservableCollection<Line> Lines
+        public ItemsChangeObservableCollection<Line> Lines
         {
             get { return this._Lines; }
             set
@@ -80,7 +80,7 @@ namespace PetitsPains.ViewModel
         /// Default constructor.
         /// </summary>
         /// <param name="Lines">Lines collection to whom to add the new person.</param>
-        public AddPersonViewModel(ObservableCollection<Line> lines)
+        public AddPersonViewModel(ItemsChangeObservableCollection<Line> lines)
         {
             AddPersonCommand = new CommandHandler<IDialog>(AddPerson, AddPersonCanExecute);
 

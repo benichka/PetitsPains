@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using PetitsPains.Model;
+using PetitsPains.Utils;
 using PetitsPains.ViewModel;
 
 namespace PetitsPains.View
@@ -17,7 +17,7 @@ namespace PetitsPains.View
         /// Default constructor.
         /// </summary>
         /// <param name="lines">List of lines to add a person.</param>
-        public AddPersonWindow(ObservableCollection<Line> lines)
+        public AddPersonWindow(ItemsChangeObservableCollection<Line> lines)
         {
             // Instanciate the view model and set it as the data context.
             ViewModel = new AddPersonViewModel(lines);

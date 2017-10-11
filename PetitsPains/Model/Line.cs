@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -30,7 +29,7 @@ namespace PetitsPains.Model
         }
 
         /// <summary>List of croissants for the person.</summary>
-        public ObservableCollection<Croissant> Croissants { get; set; }
+        public ItemsChangeObservableCollection<Croissant> Croissants { get; set; }
 
         private Croissant _SelectedCroissant;
         /// <summary>Selected croissant in the Croissants collection.</summary>
@@ -69,12 +68,6 @@ namespace PetitsPains.Model
         /// (when a penalty for this date already exists).
         /// </summary>
         public event PenaltyAlreadyExistsAtThisDateHandler PenaltyAlreadyExistsAtThisDate;
-
-        /// <summary>Handler for the PersonChanged event.</summary>
-        public delegate void PersonChangedHandler(object sender, EventArgs e);
-
-        /// <summary>Event raised when the person changed.</summary>
-        public event PersonChangedHandler PersonChanged;
         #endregion events and delegates
 
         #region constructors
@@ -92,7 +85,7 @@ namespace PetitsPains.Model
         {
             this._CroissantsSlots = croissantsSlots;
 
-            Croissants = new ObservableCollection<Croissant>();
+            Croissants = new ItemsChangeObservableCollection<Croissant>();
             for (int i = 0; i < CroissantsSlots; i++)
             {
                 Croissants.Add(new Croissant());
@@ -455,7 +448,7 @@ namespace PetitsPains.Model
         protected Line(SerializationInfo info, StreamingContext context)
         {
             Person = info.GetValue("Person", typeof(Person)) as Person;
-            Croissants = info.GetValue("Croissants", typeof(ObservableCollection<Croissant>)) as ObservableCollection<Croissant>;
+            Croissants = info.GetValue("Croissants", typeof(ItemsChangeObservableCollection<Croissant>)) as ItemsChangeObservableCollection<Croissant>;
             this._CroissantsSlots = (int)info.GetValue("CroissantsSlots", typeof(int));
         }
 
@@ -494,9 +487,10 @@ namespace PetitsPains.Model
         /// <param name="e">Event arguments.</param>
         private void HandlePersonChanged(object sender, EventArgs e)
         {
-            if (PersonChanged != null)
+            // We simply raise a property changed event for the person.
+            if (this.PropertyChanged != null)
             {
-                PersonChanged(this, EventArgs.Empty);
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Person"));
             }
         }
 
