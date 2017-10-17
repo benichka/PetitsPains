@@ -3,11 +3,13 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Web.UI;
 using System.Windows;
 using System.Windows.Forms;
 using PetitsPains.Command;
 using PetitsPains.Data;
 using PetitsPains.Model;
+using PetitsPains.Resources;
 using PetitsPains.Utils;
 using PetitsPains.View;
 
@@ -141,6 +143,9 @@ namespace PetitsPains.ViewModel
         /// <summary>Command to add a line.</summary>
         public CommandHandler AddLineCommand { get; set; }
 
+        /// <summary>Command to send the situation as an email.</summary>
+        public CommandHandler EmailCommand { get; set; }
+
         /// <summary>Command associated with the validate button.</summary>
         public CommandHandler SaveCommand { get; private set; }
         #endregion commands
@@ -170,6 +175,8 @@ namespace PetitsPains.ViewModel
             UpdateLineCommand = new CommandHandler<Line>(UpdateLine, () => true);
 
             AddLineCommand = new CommandHandler(AddLine, () => true);
+
+            EmailCommand = new CommandHandler(EmailSituation, () => true);
 
             // The Save button can not be clicked if the path is empty.
             SaveCommand = new CommandHandler(Save, () => !String.IsNullOrWhiteSpace(RootPath));
@@ -396,6 +403,17 @@ namespace PetitsPains.ViewModel
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Email the situation to everyone in the list.
+        /// </summary>
+        private void EmailSituation()
+        {
+            var emailTemplate = new EmailTemplate(Lines);
+            var emailTemplateContent = emailTemplate.TransformText();
+
+            // TODO: complete the EmailTemplate.tt; send the email.
         }
 
         /// <summary>

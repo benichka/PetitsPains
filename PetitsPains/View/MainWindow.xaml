@@ -214,15 +214,21 @@
             </Button>
         </Grid>
         <!-- TODO: set the row height to 0 when IsExpanded = false. -->
-        <Expander x:Name="OptionsExpander" Grid.Row="4" Header="Options" IsExpanded="False">
-            <DockPanel Margin="10, 5, 10, 5">
-                <Button x:Name="AddPeopleBtn" Command="{Binding AddLineCommand}" Width="80">
-                    <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+        <!--<Expander x:Name="OptionsExpander" Grid.Row="4" Header="Options" IsExpanded="False">
+
+        </Expander>-->
+        <Grid Grid.Row="4" Margin="10, 5, 10, 5" >
+            <Button x:Name="AddPeopleBtn" Command="{Binding AddLineCommand}" Width="80" HorizontalAlignment="Left">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">
                         Ajouter une personne
-                    </TextBlock>
-                </Button>
-                <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" Width="80" HorizontalAlignment="Right" />
-            </DockPanel>
-        </Expander>
+                </TextBlock>
+            </Button>
+            <Button x:Name="MailBtn" Command="{Binding EmailCommand}" Width="80" HorizontalAlignment="Center">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+                        Envoyer le rapport par mail
+                </TextBlock>
+            </Button>
+            <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" Width="80" HorizontalAlignment="Right" />
+        </Grid>
     </Grid>
 </Window>

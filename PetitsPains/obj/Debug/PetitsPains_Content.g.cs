@@ -10,6 +10,7 @@
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_filled.svg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_greyed.svg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/emailtemplate.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_empty.svg")]
 
 

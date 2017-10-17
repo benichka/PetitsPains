@@ -60,6 +60,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -80,6 +81,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Resources\EmailTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmailTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\EmailTemplateExtended.cs" />
     <Compile Include="Utils\ItemsChangeObservableCollection.cs" />
     <Compile Include="ViewModel\UpdatePersonViewModel.cs" />
     <Compile Include="View\UpdatePersonWindow.xaml.cs">
@@ -178,12 +185,19 @@
   <ItemGroup>
     <Content Include="Assets\croissant_filled.svg" />
     <Content Include="Assets\croissant_greyed.svg" />
+    <Content Include="Resources\EmailTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EmailTemplate.cs</LastGenOutput>
+    </Content>
     <Resource Include="PetitsPains.ico" />
     <Resource Include="Assets\PetitsPains.ico" />
     <Resource Include="Assets\croissant_empty.png" />
     <Content Include="Assets\croissant_empty.svg" />
     <Resource Include="Assets\croissant_filled.png" />
     <Resource Include="Assets\croissant_greyed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Title of the document</title>
+</head>
+
+<body>
+    <table>
+    <#
+    int length = lines.Count();
+    for (int i = 0; i < length; i++)
+    {
+        #>    <tr>
+            <td><#= lines[i].Person.ToString() #></td>
+<#
+        foreach (var croissant in lines[i].Croissants)
+        {
+            #>            <td>a</td>
+<#
+        }
+#>
+    <#
+
+        // Only for indentation purpose
+        if (i == (length - 1))
+        {
+            #>    </tr>
+<#
+        }
+        else
+        {
+            #>    </tr>
+    <#
+        }
+    }
+#>
+    </table>
+</body>
+
+</html> 
