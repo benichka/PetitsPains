@@ -1,4 +1,5 @@
-﻿using PetitsPains.Model;
+﻿using System;
+using PetitsPains.Model;
 using PetitsPains.Utils;
 
 namespace PetitsPains.Resources
@@ -8,6 +9,9 @@ namespace PetitsPains.Resources
     /// </summary>
     partial class EmailTemplate
     {
+        /// <summary>Date at which the report was created.</summary>
+        private DateTime date;
+
         /// <summary>Collection of lines to send in the email.</summary>
         private ItemsChangeObservableCollection<Line> lines;
 
@@ -15,8 +19,9 @@ namespace PetitsPains.Resources
         /// Constructor.
         /// </summary>
         /// <param name="lines">Collection of lines.</param>
-        public EmailTemplate(ItemsChangeObservableCollection<Line> lines)
+        public EmailTemplate(DateTime date, ItemsChangeObservableCollection<Line> lines)
         {
+            this.date = date;
             this.lines = lines;
         }
     }

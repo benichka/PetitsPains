@@ -2,7 +2,9 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using PetitsPains.Command;
@@ -112,6 +114,18 @@ namespace PetitsPains.ViewModel
                 SetProperty(CheckCommands, ref this._ProcessedDate, value);
             }
         }
+
+        private bool _IsSendingEmail;
+        /// <summary>Boolean indicating is the report email is being sent.</summary>
+        public bool IsSendingEmail
+        {
+            get { return this._IsSendingEmail; }
+            set
+            {
+                this._IsSendingEmail = value;
+                CheckCommands();
+            }
+        }
         #endregion properties
 
         #region commands
@@ -175,10 +189,12 @@ namespace PetitsPains.ViewModel
 
             AddLineCommand = new CommandHandler(AddLine, () => true);
 
-            EmailCommand = new CommandHandler(EmailSituation, () => true);
+            EmailCommand = new CommandHandler(EmailSituation, () => !IsSendingEmail);
 
             // The Save button can not be clicked if the path is empty.
             SaveCommand = new CommandHandler(Save, () => !String.IsNullOrWhiteSpace(RootPath));
+
+            IsSendingEmail = false;
 
             // By default, the proccesed date is the current day.
             ProcessedDate = DateTime.Now;
@@ -405,44 +421,93 @@ namespace PetitsPains.ViewModel
         }
 
         /// <summary>
-        /// Email the situation to everyone in the list.
+        /// Emails the situation to everyone in the list.
         /// </summary>
-        private void EmailSituation()
+        private async void EmailSituation()
         {
-            var emailTemplate = new EmailTemplate(Lines);
+            // Clean the messages.
+            InformationMessage = string.Empty;
+
+            // Generate the email content based on the template
+            var emailTemplate = new EmailTemplate(ProcessedDate, Lines);
             var emailTemplateContent = emailTemplate.TransformText();
 
-            SmtpClient mail = new SmtpClient();
+            // TODO: email configuration (address, smtp info...): in a config file.
+            // Configure the email
+            var fromAddress = new MailAddress("benoit.bedeau@gmail.com", "Benoit Masson-Bedeau");
+            var toAddress = new MailAddress("benoit.bedeau@gmail.com", "Benoit Masson-Bedeau");
+            const string fromPassword = "xolkudmgfsvtfmkn";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
 
             try
             {
-                var rootDirectory = System.Windows.Forms.Application.StartupPath;
-
-                Attachment croissantEmpty = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"))
+                using (var message = new MailMessage()
                 {
-                    ContentId = "croissantEmpty"
-                };
-
-                Attachment croissantFilled = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"))
+                    From = fromAddress,
+                    Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d")),
+                    BodyEncoding = Encoding.UTF8,
+                    IsBodyHtml = true,
+                    Body = emailTemplateContent,
+                })
                 {
-                    ContentId = "croissantFilled"
-                };
+                    // Images are attached to the mail with a contentId; that way, they will be accessible in the mail
+                    // via the attribute "cid".
+                    // For instance: <img src="cid:croissantEmpty" />
+                    var rootDirectory = System.Windows.Forms.Application.StartupPath;
 
-                Attachment croissantGreyed = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"))
-                {
-                    ContentId = "croissantGreyed"
-                };
+                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"))
+                    {
+                        ContentId = "croissantEmpty"
+                    });
+
+                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"))
+                    {
+                        ContentId = "croissantFilled"
+                    });
+
+                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"))
+                    {
+                        ContentId = "croissantGreyed"
+                    });
+
+                    // Add all the recipients
+                    // TODO: add all the recipient in a loop.
+                    message.To.Add(toAddress);
+
+                    IsSendingEmail = true;
+
+                    // Send the mail and inform the user when it's done.
+                    await smtp.SendMailAsync(message);
+
+                    InformationMessage = "Message envoyé.";
+                }
             }
             catch (Exception)
             {
-                // TODO: handle the exception when it's not possible to send the email.
-                // Simply set a text in the errorInfo.
-                throw;
+                // If an error occur
+                InformationMessage = "erreur lors de l'envoi du mail.";
+            }
+            finally
+            {
+                if (smtp != null)
+                {
+                    smtp.Dispose();
+                }
+
+                IsSendingEmail = false;
             }
 
             // TODO: complete the EmailTemplate.tt; send the email.
-            // See https://www.emailarchitect.net/easendmail/kb/csharp.aspx?cat=8 to send a mail... And StackOverflow (test the
-            // sending using gmail)
+            // -> list all the people that need to bring the croissant.
         }
 
         /// <summary>
@@ -559,6 +624,7 @@ namespace PetitsPains.ViewModel
             RemovePenaltyCommand.RaiseCanExecuteChanged();
             ActivateCroissantCommand.RaiseCanExecuteChanged();
             SelectLineCommand.RaiseCanExecuteChanged();
+            EmailCommand.RaiseCanExecuteChanged();
             SaveCommand.RaiseCanExecuteChanged();
         }
     }

@@ -52,6 +52,18 @@ namespace PetitsPains.Model
             }
         }
 
+        private bool _HasToBringCroissants;
+        /// <summary>A croissant has been deactivated ; the person has to bring the croissants.</summary>
+        public bool HasToBringCroissants
+        {
+            get { return this._HasToBringCroissants; }
+            private set
+            {
+                // TODO: handle the HasToBringCroissants property.
+                SetProperty(ref this._HasToBringCroissants, value);
+            }
+        }
+
         /// <summary>Default value for the maximum croissant penalties a person can have before bringing the croissants.</summary>
         public static int CroissantsSlotsDefault
         {
@@ -437,6 +449,11 @@ namespace PetitsPains.Model
             {
                 croissantToActivate.State = Croissant.CroissantState.IsAvailable;
             }
+
+            // TODO: when a croissant is reactivated, fill the gaps.
+            // -> for i = list size to last deactivated croissant, if a slot is empty, move
+            // the n-1th slot to the nth slot.
+            // It works because only one reactivation can be done at once.
         }
 
         #region serialisation
