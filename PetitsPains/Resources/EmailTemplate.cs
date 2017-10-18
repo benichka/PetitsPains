@@ -12,6 +12,7 @@ namespace PetitsPains.Resources
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using PetitsPains.Model;
     using System;
     
     /// <summary>
@@ -31,7 +32,7 @@ namespace PetitsPains.Resources
             this.Write("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n<title>Title of the docu" +
                     "ment</title>\r\n</head>\r\n\r\n<body>\r\n    <table>\r\n    ");
             
-            #line 15 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 16 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     int length = lines.Count();
     for (int i = 0; i < length; i++)
@@ -42,25 +43,66 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    <tr>\r\n            <td>");
             
-            #line 20 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 21 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(lines[i].Person.ToString()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n");
             
-            #line 21 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 22 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         foreach (var croissant in lines[i].Croissants)
         {
-            
+            if (croissant.State == Croissant.CroissantState.IsAvailable)
+            {
+                        
             
             #line default
             #line hidden
-            this.Write("            <td>a</td>\r\n");
+            this.Write("            <td><img src=\"cid:croissantEmpty\" alt=\"Emplacement non utilisé\" title" +
+                    "=\"Emplacement non utilisé\" /></td>\r\n");
             
-            #line 25 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 28 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
+            }
+            else if (croissant.State == Croissant.CroissantState.IsUsed)
+            {
+                        
+            
+            #line default
+            #line hidden
+            this.Write("            <td><img src=\"cid:croissantFilled\" alt=\"Pénalité en date du ");
+            
+            #line 32 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(croissant.Date.Value.ToString("d")));
+            
+            #line default
+            #line hidden
+            this.Write("\" title=\"Pénalité en date de ");
+            
+            #line 32 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(croissant.Date.Value.ToString("d")));
+            
+            #line default
+            #line hidden
+            this.Write("\" /></td>\r\n");
+            
+            #line 33 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+
+            }
+            else if (croissant.State == Croissant.CroissantState.IsDeactivated)
+            {
+                        
+            
+            #line default
+            #line hidden
+            this.Write("            <td><img src=\"cid:croissantGreyed\" alt=\"Emplacement désactivé\" title=" +
+                    "\"Emplacement désactivé\" /></td>\r\n");
+            
+            #line 38 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+
+            }
         }
 
             
@@ -68,7 +110,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    ");
             
-            #line 28 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 42 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
 
         // Only for indentation purpose
@@ -80,7 +122,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    </tr>\r\n");
             
-            #line 34 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 48 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
         else
@@ -91,7 +133,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    </tr>\r\n    ");
             
-            #line 39 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 53 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
     }

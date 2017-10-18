@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Web.UI;
+using System.Net.Mail;
 using System.Windows;
 using System.Windows.Forms;
 using PetitsPains.Command;
@@ -413,7 +412,37 @@ namespace PetitsPains.ViewModel
             var emailTemplate = new EmailTemplate(Lines);
             var emailTemplateContent = emailTemplate.TransformText();
 
+            SmtpClient mail = new SmtpClient();
+
+            try
+            {
+                var rootDirectory = System.Windows.Forms.Application.StartupPath;
+
+                Attachment croissantEmpty = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"))
+                {
+                    ContentId = "croissantEmpty"
+                };
+
+                Attachment croissantFilled = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"))
+                {
+                    ContentId = "croissantFilled"
+                };
+
+                Attachment croissantGreyed = new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"))
+                {
+                    ContentId = "croissantGreyed"
+                };
+            }
+            catch (Exception)
+            {
+                // TODO: handle the exception when it's not possible to send the email.
+                // Simply set a text in the errorInfo.
+                throw;
+            }
+
             // TODO: complete the EmailTemplate.tt; send the email.
+            // See https://www.emailarchitect.net/easendmail/kb/csharp.aspx?cat=8 to send a mail... And StackOverflow (test the
+            // sending using gmail)
         }
 
         /// <summary>

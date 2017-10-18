@@ -3,6 +3,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="PetitsPains.Model" #>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +22,21 @@
 <#
         foreach (var croissant in lines[i].Croissants)
         {
-            #>            <td>a</td>
+            if (croissant.State == Croissant.CroissantState.IsAvailable)
+            {
+                        #>            <td><img src="cid:croissantEmpty" alt="Emplacement non utilisé" title="Emplacement non utilisé" /></td>
 <#
+            }
+            else if (croissant.State == Croissant.CroissantState.IsUsed)
+            {
+                        #>            <td><img src="cid:croissantFilled" alt="Pénalité en date du <#= croissant.Date.Value.ToString("d") #>" title="Pénalité en date de <#= croissant.Date.Value.ToString("d") #>" /></td>
+<#
+            }
+            else if (croissant.State == Croissant.CroissantState.IsDeactivated)
+            {
+                        #>            <td><img src="cid:croissantGreyed" alt="Emplacement désactivé" title="Emplacement désactivé" /></td>
+<#
+            }
         }
 #>
     <#
