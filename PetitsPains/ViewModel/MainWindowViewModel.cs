@@ -2,17 +2,16 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Outlook;
 using PetitsPains.Command;
 using PetitsPains.Data;
 using PetitsPains.Model;
 using PetitsPains.Resources;
 using PetitsPains.Utils;
 using PetitsPains.View;
+using OutlookApp = Microsoft.Office.Interop.Outlook.Application;
 
 namespace PetitsPains.ViewModel
 {
@@ -252,7 +251,7 @@ namespace PetitsPains.ViewModel
                     fs.WriteByte(0xff);
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 // TODO: find a way to make the border of PathTextBox red if an error occurs.
                 // -> in the view!
@@ -309,7 +308,7 @@ namespace PetitsPains.ViewModel
 
                 UpdatePath();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 ErrorPathInvalid = String.Format("Erreur : le chemin est invalide : {0}.", ex.Message);
             }
@@ -432,77 +431,49 @@ namespace PetitsPains.ViewModel
             var emailTemplate = new EmailTemplate(ProcessedDate, Lines);
             var emailTemplateContent = emailTemplate.TransformText();
 
-            // TODO: email configuration (address, smtp info...): in a config file.
-            // Configure the email
-            var fromAddress = new MailAddress("benoit.bedeau@gmail.com", "Benoit Masson-Bedeau");
-            var toAddress = new MailAddress("benoit.bedeau@gmail.com", "Benoit Masson-Bedeau");
-            const string fromPassword = "xolkudmgfsvtfmkn";
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-
+            // Send the mail via Outlook
+            // TODO: make the opening in Outlook part async (put it in a method and Task.Run() ?).
+            // Check that the email button is disable just after clicking it.
+            IsSendingEmail = true;
             try
             {
-                using (var message = new MailMessage()
-                {
-                    From = fromAddress,
-                    Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d")),
-                    BodyEncoding = Encoding.UTF8,
-                    IsBodyHtml = true,
-                    Body = emailTemplateContent,
-                })
-                {
-                    // Images are attached to the mail with a contentId; that way, they will be accessible in the mail
-                    // via the attribute "cid".
-                    // For instance: <img src="cid:croissantEmpty" />
-                    var rootDirectory = System.Windows.Forms.Application.StartupPath;
+                OutlookApp outlookApp = new OutlookApp();
+                MailItem mailItem = outlookApp.CreateItem(OlItemType.olMailItem);
 
-                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"))
-                    {
-                        ContentId = "croissantEmpty"
-                    });
+                // TODO: add all the email recipient with a loop.
+                mailItem.Recipients.Add("benoit.bedeau@gmail.com");
+                mailItem.Recipients.ResolveAll();
 
-                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"))
-                    {
-                        ContentId = "croissantFilled"
-                    });
+                mailItem.Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d"));
 
-                    message.Attachments.Add(new Attachment(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"))
-                    {
-                        ContentId = "croissantGreyed"
-                    });
+                // Images are attached to the mail with a contentId; that way, they will be accessible in the mail
+                // via the attribute "cid".
+                // For instance: <img src="cid:croissantEmpty" />
+                // In Outlook, this attribute is the property that has the schema name
+                // http://schemas.microsoft.com/mapi/proptag/0x3712001E.
+                var rootDirectory = System.Windows.Forms.Application.StartupPath;
 
-                    // Add all the recipients
-                    // TODO: add all the recipient in a loop.
-                    message.To.Add(toAddress);
+                // TODO: the path is probably not this one when the application runs in production.
+                Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"));
+                croissantEmptyAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantEmpty");
 
-                    IsSendingEmail = true;
+                Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"));
+                croissantFilledAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantFilled");
 
-                    // Send the mail and inform the user when it's done.
-                    await smtp.SendMailAsync(message);
+                Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"));
+                croissantGreyedAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantGreyed");
 
-                    InformationMessage = "Message envoyé.";
-                }
+                mailItem.HTMLBody = emailTemplateContent;
+
+                mailItem.Display(false);
             }
-            catch (Exception)
+            catch (System.Exception)
             {
-                // If an error occur
-                InformationMessage = "erreur lors de l'envoi du mail.";
+                InformationMessage = "Erreur lors du démarrage d'Outlook.";
             }
             finally
             {
-                if (smtp != null)
-                {
-                    smtp.Dispose();
-                }
-
                 IsSendingEmail = false;
             }
 

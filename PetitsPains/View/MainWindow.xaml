@@ -225,7 +225,7 @@
             </Button>
             <Button x:Name="MailBtn" Command="{Binding EmailCommand}" Width="80" HorizontalAlignment="Center">
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">
-                        Envoyer le rapport par mail
+                        Envoyer le rapport par mail (Outlook)
                 </TextBlock>
             </Button>
             <Button x:Name="SaveBtn" Content="Sauvegarder" Command="{Binding SaveCommand}" Width="80" HorizontalAlignment="Right" />
