@@ -16,18 +16,46 @@
     <div style="font-size:70%">
         Légende :
         <ul>
-            <li><img height="16" width="16" src="cid:croissantEmpty" alt="Emplacement non utilisé" title="Emplacement non utilisé" /> : emplacement non utilisé ;</li>
-            <li><img height="16" width="16" src="cid:croissantFilled" alt="Pénalité" title="Pénalité" /> : emplacement avec une pénalité (la date de la pénalité s'affiche au survol) ;</li>
-            <li><img height="16" width="16" src="cid:croissantGreyed" alt="Emplacement désactivé" title="Emplacement désactivé" /> : emplacement désactivé.</li>
+            <li><img height="12" width="12" src="cid:croissantEmpty" alt="Emplacement non utilisé" title="Emplacement non utilisé" />&nbsp;: emplacement non utilisé ;</li>
+            <li><img height="12" width="12" src="cid:croissantFilled" alt="Pénalité" title="Pénalité" />&nbsp;: emplacement avec une pénalité (la date de la pénalité s'affiche au survol) ;</li>
+            <li><img height="12" width="12" src="cid:croissantGreyed" alt="Emplacement désactivé" title="Emplacement désactivé" />&nbsp;: emplacement désactivé.</li>
         </ul>
     </div>
+    <#
+    var peopleThatGotAPenalty = (from line in lines
+                                where line.PenaltiesAdded.Count > 0
+                                select line.Person).ToList();
+
+    var peopleThatHaveToBringCroissants =   (from line in lines
+                                            where line.HasToBringCroissants
+                                            select line.Person).ToList();
+
+    if (peopleThatGotAPenalty.Count > 0)
+    {
+        // TODO: generate the message to indicate that a list of people got at last 1 penalty this time.
+        #><div></div><#
+    }
+    else
+    {
+        // TODO: generate the message to indicate that no one got a penalty.
+        #><div>
+        Aucun oublie de CRA ce jour.
+    </div>
+<#
+    }
+
+    if (peopleThatHaveToBringCroissants.Count > 0)
+    {
+        // TODO: generate the message to indicate that a list of people has to bring the croissants.
+    }
+    #>
     <table>
     <#
     int length = lines.Count();
     for (int i = 0; i < length; i++)
     {
         #>    <tr>
-            <td><#= lines[i].Person.ToString() #></td>
+            <td style="margin:0 20px 0 0"><#= lines[i].Person.ToString() #></td>
 <#
         foreach (var croissant in lines[i].Croissants)
         {
@@ -69,7 +97,7 @@
         <ul>
             <li>le CRA est à soumettre chaque jour de présence avant de partir ;</li>
             <li>le relevé des CRA se fait le matin ;</li>
-            <li>du lundi au jeudi, si le CRA du jour précédent est manquant la personne a une pénalité d'un croissant ;</li>
+            <li>du lundi au jeudi, si le CRA du jour précédent est manquant, la personne a une pénalité d'un croissant ;</li>
             <li>le vendredi et le lundi, s'il manque un CRA des jours précédents, la personne a une pénalité de deux croissants ;</li>
             <li>si la personne n'a pas saisie sont CRA de la semaine, elle a une pénalité « foutage de gueule » d'un croissant ;</li>
             <li>si une personne complète sa ligne, elle doit ramener croissants/petits pains/gâteau à l'équipe ET sa ligne est amputée d'une case.</li>

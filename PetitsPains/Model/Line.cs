@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -52,8 +53,19 @@ namespace PetitsPains.Model
             }
         }
 
+        private ObservableCollection<DateTime> _PenaltiesAdded;
+        /// <summary>List of penalties added for this instance.</summary>
+        public ObservableCollection<DateTime> PenaltiesAdded
+        {
+            get { return this._PenaltiesAdded; }
+            set
+            {
+                SetProperty(ref this._PenaltiesAdded, value);
+            }
+        }
+
         private bool _HasToBringCroissants;
-        /// <summary>A croissant has been deactivated ; the person has to bring the croissants.</summary>
+        /// <summary>A croissant has been deactivated; the person has to bring the croissants.</summary>
         public bool HasToBringCroissants
         {
             get { return this._HasToBringCroissants; }
@@ -102,6 +114,8 @@ namespace PetitsPains.Model
             {
                 Croissants.Add(new Croissant());
             }
+
+            PenaltiesAdded = new ObservableCollection<DateTime>();
         }
         #endregion constructors
 
@@ -209,6 +223,10 @@ namespace PetitsPains.Model
                 {
                     ProcessPenaltyAdding(date);
                 }
+
+                // A penalty was added for this instance
+                // -> very simple processing...
+                PenaltiesAdded.Add(date);
             }
             else
             {
@@ -237,6 +255,16 @@ namespace PetitsPains.Model
 
             // Sort the list of croissant to put the gaps to the right of the collection
             Croissants.BubbleSort(SortDirection.Ascending);
+
+            // Update the list of penalties for this instance: simply remove the penalties at this date
+            var penaltiesToRemove = (from p in PenaltiesAdded
+                                     where p == date
+                                     select p).ToList();
+
+            foreach (var penalty in penaltiesToRemove)
+            {
+                PenaltiesAdded.Remove(penalty);
+            }
 
             // TODO: Eventually, improve the removal of a penalty.
             // Right now, it is very simple: delete all penalty at this date. But it can have
@@ -279,7 +307,7 @@ namespace PetitsPains.Model
                 // Deactivate croissant.
                 Croissants[GetNextIndexToDeactivate()].State = Croissant.CroissantState.IsDeactivated;
 
-                // TODO: send a mail or something to alert the person that they have to bring the croissant.
+                HasToBringCroissants = true;
             }
         }
 
@@ -293,11 +321,11 @@ namespace PetitsPains.Model
             // The default number is 1
             var penaltiesToAdd = 1;
 
-            // If the day is Friday and the person forgot to submit their CRA at least
-            // one day during the week or if the day is Monday and the person forgot to
-            // submit their CRA at least one day during last week, 2 penalties are added.
-            if ((date.DayOfWeek == DayOfWeek.Friday && CheckAtLeastOnePenaltyThisWeek(date)) ||
-                (date.DayOfWeek == DayOfWeek.Monday && CheckAtLeastOnePenaltyLastWeek(date)))
+            // If the day is Friday or Monday, 2 penalties are added.
+            // -> it means that the person forgot to submit their CRA
+            // on thursday or friday.
+            if ((date.DayOfWeek == DayOfWeek.Friday) ||
+                (date.DayOfWeek == DayOfWeek.Monday))
             {
                 penaltiesToAdd = 2;
             }
@@ -448,6 +476,12 @@ namespace PetitsPains.Model
             if (croissantToActivate != null)
             {
                 croissantToActivate.State = Croissant.CroissantState.IsAvailable;
+
+                // We consider that if a croissant is reactivated, the person doesn't have
+                // to bring the croissant anymore: the "admin" probably set a penalty by
+                // mistake.
+                // Very simple processing though.
+                HasToBringCroissants = false;
             }
 
             // TODO: when a croissant is reactivated, fill the gaps.
@@ -467,6 +501,7 @@ namespace PetitsPains.Model
             Person = info.GetValue("Person", typeof(Person)) as Person;
             Croissants = info.GetValue("Croissants", typeof(ItemsChangeObservableCollection<Croissant>)) as ItemsChangeObservableCollection<Croissant>;
             this._CroissantsSlots = (int)info.GetValue("CroissantsSlots", typeof(int));
+            PenaltiesAdded = new ObservableCollection<DateTime>();
         }
 
         /// <summary>

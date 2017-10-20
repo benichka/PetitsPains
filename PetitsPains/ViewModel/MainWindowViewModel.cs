@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
@@ -433,52 +435,52 @@ namespace PetitsPains.ViewModel
 
 
             // Send the mail via Outlook
-            // TODO: make the opening in Outlook part async (put it in a method and Task.Run() ?).
             // Check that the email button is disable just after clicking it.
             IsSendingEmail = true;
-            try
+            await Task.Run(() =>
             {
-                OutlookApp outlookApp = new OutlookApp();
-                MailItem mailItem = outlookApp.CreateItem(OlItemType.olMailItem);
+                try
+                {
+                    OutlookApp outlookApp = new OutlookApp();
+                    MailItem mailItem = outlookApp.CreateItem(OlItemType.olMailItem);
 
-                // TODO: add all the email recipient with a loop.
-                mailItem.Recipients.Add("benoit.bedeau@gmail.com");
-                mailItem.Recipients.ResolveAll();
+                    // TODO: add all the email recipient with a loop.
+                    mailItem.Recipients.Add("benoit.bedeau@gmail.com");
+                    mailItem.Recipients.ResolveAll();
 
-                mailItem.Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d"));
+                    mailItem.Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d"));
 
-                // Images are attached to the mail with a contentId; that way, they will be accessible in the mail
-                // via the attribute "cid".
-                // For instance: <img src="cid:croissantEmpty" />
-                // In Outlook, this attribute is the property that has the schema name
-                // http://schemas.microsoft.com/mapi/proptag/0x3712001E.
-                var rootDirectory = System.Windows.Forms.Application.StartupPath;
+                    // Images are attached to the mail with a contentId; that way, they will be accessible in the mail
+                    // via the attribute "cid".
+                    // For instance: <img src="cid:croissantEmpty" />
+                    // In Outlook, this attribute is the property that has the schema name
+                    // http://schemas.microsoft.com/mapi/proptag/0x3712001E.
+                    var rootDirectory = System.Windows.Forms.Application.StartupPath;
 
-                // TODO: the path is probably not this one when the application runs in production.
-                Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"));
-                croissantEmptyAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantEmpty");
+                    // TODO: the path is probably not this one when the application runs in production.
+                    Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"));
+                    croissantEmptyAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantEmpty");
 
-                Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"));
-                croissantFilledAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantFilled");
+                    Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"));
+                    croissantFilledAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantFilled");
 
-                Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"));
-                croissantGreyedAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantGreyed");
+                    Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"));
+                    croissantGreyedAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantGreyed");
 
-                mailItem.HTMLBody = emailTemplateContent;
+                    mailItem.HTMLBody = emailTemplateContent;
 
-                mailItem.Display(false);
-            }
-            catch (System.Exception)
-            {
-                InformationMessage = "Erreur lors du démarrage d'Outlook.";
-            }
-            finally
-            {
-                IsSendingEmail = false;
-            }
+                    mailItem.Display(false);
+                }
+                catch (System.Exception)
+                {
+                    InformationMessage = "Erreur lors du démarrage d'Outlook.";
+                }
+            });
 
+            IsSendingEmail = false;
             // TODO: complete the EmailTemplate.tt; send the email.
-            // -> list all the people that need to bring the croissant.
+            // -> list all the people that need to bring the croissant (Line.HasToBringCroissant).
+            // -> list all the people that got a penalty for this instance (Line.PenaltiesAdded).
         }
 
         /// <summary>
