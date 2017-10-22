@@ -1,3 +1,11 @@
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\credits.txt
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_filled.svg
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_greyed.svg
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\PetitsPains.ico
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_empty.png
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_empty.svg
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_filled.png
+C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Assets\croissant_greyed.png
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
 C:\00 - Data\programmation\PetitsPains\PetitsPainsTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll

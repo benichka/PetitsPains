@@ -6,7 +6,7 @@
         xmlns:conv="clr-namespace:PetitsPains.Converter"
         xmlns:model="clr-namespace:PetitsPains.Model"
         x:Name="PetitsPainsWindow"
-        Title="Petits pains" Height="500" Width="550">
+        Title="Petits pains" Height="500" Width="600">
     <Window.DataContext>
         <ViewModel:MainWindowViewModel />
     </Window.DataContext>
@@ -105,7 +105,7 @@
                             <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="PersonTB" Grid.Column="0" Text="{Binding Person}" TextWrapping="Wrap" VerticalAlignment="Center" />
-                        <StackPanel Grid.Column="1">
+                        <Grid Grid.Column="1">
                             <ListView x:Name="CroissantsLV" ItemsSource="{Binding Croissants}" SelectedItem="{Binding SelectedCroissant}" BorderThickness="0" HorizontalAlignment="Center" SelectionMode="Single">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="GotFocus">
@@ -122,7 +122,7 @@
                                 </ListView.ItemsPanel>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel>
                                             <Image Width="16" RenderOptions.BitmapScalingMode="Fant" ToolTip="{Binding Date}">
                                                 <Image.Style>
                                                     <Style TargetType="Image">
@@ -149,10 +149,9 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                        </StackPanel>
+                        </Grid>
                         <!-- TODO: change the image of the button; say, a croissant with a "+" on overlay -->
-                        <!-- TODO: set the command with a cleaner method; see how it's done for the TextBlocks showing the selected line -->
-                        <Button x:Name="AddPenaltyBtn" Grid.Column="2" Content="+" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AddPenaltyCommand}" CommandParameter="{Binding}" HorizontalAlignment="Center" Height="25" Width="25" />
+                        <Button x:Name="AddPenaltyBtn" Grid.Column="2" Content="+" ToolTip="Ajouter une pénalité à la date traitée" Command="{Binding ElementName=PetitsPainsWindow, Path=DataContext.AddPenaltyCommand}" CommandParameter="{Binding}" HorizontalAlignment="Center" Height="25" Width="25" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

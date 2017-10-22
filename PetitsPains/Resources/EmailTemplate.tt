@@ -13,12 +13,12 @@
 
 <body>
     <h1>Rapport en date du <#= date.ToString("d") #></h1>
-    <div style="font-size:70%">
+    <div style="font-size:70%; margin:0 0 1em 0">
         Légende :
         <ul>
-            <li><img height="12" width="12" src="cid:croissantEmpty" alt="Emplacement non utilisé" title="Emplacement non utilisé" />&nbsp;: emplacement non utilisé ;</li>
-            <li><img height="12" width="12" src="cid:croissantFilled" alt="Pénalité" title="Pénalité" />&nbsp;: emplacement avec une pénalité (la date de la pénalité s'affiche au survol) ;</li>
-            <li><img height="12" width="12" src="cid:croissantGreyed" alt="Emplacement désactivé" title="Emplacement désactivé" />&nbsp;: emplacement désactivé.</li>
+            <li style="margin: 0.2em"><img height="12" width="12" src="cid:croissantEmpty" alt="Emplacement non utilisé" title="Emplacement non utilisé" />&nbsp;: emplacement non utilisé ;</li>
+            <li style="margin: 0.2em"><img height="12" width="12" src="cid:croissantFilled" alt="Pénalité" title="Pénalité" />&nbsp;: emplacement avec une pénalité (la date de la pénalité s'affiche au survol) ;</li>
+            <li style="margin: 0.2em"><img height="12" width="12" src="cid:croissantGreyed" alt="Emplacement désactivé" title="Emplacement désactivé" />&nbsp;: emplacement désactivé.</li>
         </ul>
     </div>
     <#
@@ -32,13 +32,23 @@
 
     if (peopleThatGotAPenalty.Count > 0)
     {
-        // TODO: generate the message to indicate that a list of people got at last 1 penalty this time.
-        #><div></div><#
+        #><div style="margin:0 0 1em 0">
+        Les personnes suivantes ont oubliés de soumettre leur CRA :
+        <ul>
+        <#
+        foreach(var person in peopleThatGotAPenalty)
+        {
+        #>    <li style="margin: 0.2em"><#= person.ToString() #></li>
+        <#
+        }
+        #>
+</ul>
+    </div>
+<#
     }
     else
     {
-        // TODO: generate the message to indicate that no one got a penalty.
-        #><div>
+        #><div style="margin:0 0 1em 0">
         Aucun oublie de CRA ce jour.
     </div>
 <#
@@ -46,7 +56,19 @@
 
     if (peopleThatHaveToBringCroissants.Count > 0)
     {
-        // TODO: generate the message to indicate that a list of people has to bring the croissants.
+        #>    <div style="margin:0 0 1em 0">
+        <h3 style="color:red">Les personnes suivantes doivent ramener les croissants !</h3>
+        <ul>
+        <#
+        foreach(var person in peopleThatHaveToBringCroissants)
+        {
+        #>    <li style="margin: 0.2em"><#= person.ToString() #></li>
+        <#
+        }
+        #>
+</ul>
+    </div>
+<#
     }
     #>
     <table>
@@ -92,15 +114,15 @@
     }
 #>
     </table>
-    <div style="margin:20px 0 0 0">
+    <div style="margin:1em 0 0 0">
         Rappel des règles :
         <ul>
-            <li>le CRA est à soumettre chaque jour de présence avant de partir ;</li>
-            <li>le relevé des CRA se fait le matin ;</li>
-            <li>du lundi au jeudi, si le CRA du jour précédent est manquant, la personne a une pénalité d'un croissant ;</li>
-            <li>le vendredi et le lundi, s'il manque un CRA des jours précédents, la personne a une pénalité de deux croissants ;</li>
-            <li>si la personne n'a pas saisie sont CRA de la semaine, elle a une pénalité « foutage de gueule » d'un croissant ;</li>
-            <li>si une personne complète sa ligne, elle doit ramener croissants/petits pains/gâteau à l'équipe ET sa ligne est amputée d'une case.</li>
+            <li style="margin: 0.2em">le CRA est à soumettre chaque jour de présence avant de partir ;</li>
+            <li style="margin: 0.2em">le relevé des CRA se fait le matin ;</li>
+            <li style="margin: 0.2em">du lundi au jeudi, si le CRA du jour précédent est manquant, la personne a une pénalité d'un croissant ;</li>
+            <li style="margin: 0.2em">le vendredi et le lundi, s'il manque un CRA des jours précédents, la personne a une pénalité de deux croissants ;</li>
+            <li style="margin: 0.2em">si la personne n'a pas saisie sont CRA de la semaine, elle a une pénalité « foutage de gueule » d'un croissant ;</li>
+            <li style="margin: 0.2em">si une personne complète sa ligne, elle doit ramener croissants/petits pains/gâteau à l'équipe ET sa ligne est amputée d'une case.</li>
         </ul>
     </div>
 </body>

@@ -8,9 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/credits.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_filled.svg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_greyed.svg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/emailtemplate.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/petitspains.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_empty.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_empty.svg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_filled.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/croissant_greyed.png")]
 
 

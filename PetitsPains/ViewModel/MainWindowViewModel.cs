@@ -394,7 +394,9 @@ namespace PetitsPains.ViewModel
         {
             if (SelectedLine != null && SelectedLine.SelectedCroissant != null)
             {
-                SelectedLine.ReactivatedCroissant(SelectedLine.SelectedCroissant);
+                // A deactivated croissant doesn't have a date of deactivation,
+                // so we simply ask the line to reactivate one of its croissant.
+                SelectedLine.ReactivatedCroissant();
             }
             else
             {
@@ -433,19 +435,20 @@ namespace PetitsPains.ViewModel
             var emailTemplate = new EmailTemplate(ProcessedDate, Lines);
             var emailTemplateContent = emailTemplate.TransformText();
 
-
             // Send the mail via Outlook
             // Check that the email button is disable just after clicking it.
             IsSendingEmail = true;
-            await Task.Run(() =>
+            try
             {
-                try
+                await Task.Run(() =>
                 {
                     OutlookApp outlookApp = new OutlookApp();
                     MailItem mailItem = outlookApp.CreateItem(OlItemType.olMailItem);
 
-                    // TODO: add all the email recipient with a loop.
-                    mailItem.Recipients.Add("benoit.bedeau@gmail.com");
+                    foreach (var line in Lines)
+                    {
+                        mailItem.Recipients.Add(line.Person.Email);
+                    }
                     mailItem.Recipients.ResolveAll();
 
                     mailItem.Subject = String.Format("Soumission des CRA : rapport du {0}", ProcessedDate.ToString("d"));
@@ -455,32 +458,26 @@ namespace PetitsPains.ViewModel
                     // For instance: <img src="cid:croissantEmpty" />
                     // In Outlook, this attribute is the property that has the schema name
                     // http://schemas.microsoft.com/mapi/proptag/0x3712001E.
-                    var rootDirectory = System.Windows.Forms.Application.StartupPath;
-
-                    // TODO: the path is probably not this one when the application runs in production.
-                    Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_empty.png"));
+                    Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_empty.png"));
                     croissantEmptyAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantEmpty");
 
-                    Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_filled.png"));
+                    Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_filled.png"));
                     croissantFilledAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantFilled");
 
-                    Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.Combine(rootDirectory, @"../../Assets/croissant_greyed.png"));
+                    Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_greyed.png"));
                     croissantGreyedAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantGreyed");
 
                     mailItem.HTMLBody = emailTemplateContent;
 
                     mailItem.Display(false);
-                }
-                catch (System.Exception)
-                {
-                    InformationMessage = "Erreur lors du démarrage d'Outlook.";
-                }
-            });
+                });
+            }
+            catch (System.Exception)
+            {
+                InformationMessage = "Erreur lors de la préparation du message";
+            }
 
             IsSendingEmail = false;
-            // TODO: complete the EmailTemplate.tt; send the email.
-            // -> list all the people that need to bring the croissant (Line.HasToBringCroissant).
-            // -> list all the people that got a penalty for this instance (Line.PenaltiesAdded).
         }
 
         /// <summary>
@@ -581,10 +578,6 @@ namespace PetitsPains.ViewModel
             // If the path changed, move files.
             ManageFilesOnPathChanged();
         }
-
-        // TODO: create a button, for instance "send report".
-        // - generate a mail with Outlook displaying the table as it looks like in the application ;
-        // - if someone has to bring the croissants, tell it.
 
         /// <summary>
         /// Checks if every command is executable.

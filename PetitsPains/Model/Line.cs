@@ -71,7 +71,6 @@ namespace PetitsPains.Model
             get { return this._HasToBringCroissants; }
             private set
             {
-                // TODO: handle the HasToBringCroissants property.
                 SetProperty(ref this._HasToBringCroissants, value);
             }
         }
@@ -267,7 +266,7 @@ namespace PetitsPains.Model
             }
 
             // TODO: Eventually, improve the removal of a penalty.
-            // Right now, it is very simple: delete all penalty at this date. But it can have
+            // Right now, it is very simple: delete all penalties at this date. But it can have
             // consequences, especially it we remove a penalty on friday: 2 croissants are removed,
             // or 3 if the person didn't submit their CRA the whole week.
             // Plus, if we remove a penalty in the week and the person already has a penalty on friday
@@ -298,7 +297,7 @@ namespace PetitsPains.Model
                 Croissants[newDateIndex].Date = date;
             }
             // Otherwise, they have to bring the croissants!
-            // Their penalties limit is also lowered by one.
+            // Their penalties limit is consequently lowered by one.
             else
             {
                 // Reset the date for each croissant.
@@ -469,13 +468,15 @@ namespace PetitsPains.Model
         /// <summary>
         /// Reactivate a croissant that has been deactivated.
         /// </summary>
-        /// <param name="croissant">Croissant to activate.</param>
-        public void ReactivatedCroissant(Croissant croissant)
+        public void ReactivatedCroissant()
         {
-            var croissantToActivate = Croissants.FirstOrDefault(c => c == croissant);
-            if (croissantToActivate != null)
+            // A deactivated croissant doesn't have a date of deactivation,
+            // so we simply reactivate the last deactivated croissant in the slots.
+
+            int? indexOfCroissantToReactivate = GetIndexOfCroissantToReactivate();
+            if (indexOfCroissantToReactivate != null)
             {
-                croissantToActivate.State = Croissant.CroissantState.IsAvailable;
+                Croissants[indexOfCroissantToReactivate.Value].State = Croissant.CroissantState.IsAvailable;
 
                 // We consider that if a croissant is reactivated, the person doesn't have
                 // to bring the croissant anymore: the "admin" probably set a penalty by
@@ -483,11 +484,28 @@ namespace PetitsPains.Model
                 // Very simple processing though.
                 HasToBringCroissants = false;
             }
+        }
 
-            // TODO: when a croissant is reactivated, fill the gaps.
-            // -> for i = list size to last deactivated croissant, if a slot is empty, move
-            // the n-1th slot to the nth slot.
-            // It works because only one reactivation can be done at once.
+        /// <summary>
+        /// Get the index of the croissant to reactivate. This is the index of the
+        /// last croissant that was deactivated.
+        /// </summary>
+        /// <returns>The index of the croissant to reactivate.</returns>
+        private int? GetIndexOfCroissantToReactivate()
+        {
+            int? index = null;
+            for (int i = 0; i < Croissants.Count; i++)
+            {
+                if (Croissants[i].State == Croissant.CroissantState.IsDeactivated)
+                {
+                    // The last croissant to be deactivated is the first croissant in
+                    // the list of croissants that is... deactivated!
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
         }
 
         #region serialisation

@@ -4,7 +4,7 @@
       "FirstName": "Adrien",
       "LastName": "Finck",
       "PersoId": "finckad",
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -55,7 +55,7 @@
       "FirstName": "Benoit",
       "LastName": "Masson-Bedeau",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -106,7 +106,7 @@
       "FirstName": "Cédric",
       "LastName": "Kuntz",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -157,7 +157,7 @@
       "FirstName": "Florian",
       "LastName": "Krem",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -208,7 +208,7 @@
       "FirstName": "Gwenaël",
       "LastName": "Maillot",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -259,7 +259,7 @@
       "FirstName": "Kévin",
       "LastName": "Rei-Bento",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -310,7 +310,7 @@
       "FirstName": "Nelly",
       "LastName": "Moog",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
@@ -361,7 +361,7 @@
       "FirstName": "Romaine",
       "LastName": "Weber",
       "PersoId": null,
-      "Email": null
+      "Email": "test@nodomain.com"
     },
     "Croissants": [
       {
