@@ -3,12 +3,13 @@
     "Person": {
       "FirstName": "Adrien",
       "LastName": "Finck",
-      "Email": null
+      "PersoId": "finckad",
+      "Email": "finckad@nodomain.com"
     },
     "Croissants": [
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-29T00:00:00",
+        "State": 1
       },
       {
         "Date": null,
@@ -44,29 +45,29 @@
       },
       {
         "Date": null,
-        "State": 0
+        "State": 2
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Benoit",
       "LastName": "Masson-Bedeau",
-      "Email": null
+      "PersoId": "massonbn",
+      "Email": "massonbn@nodomain.com"
     },
     "Croissants": [
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-23T00:00:00",
+        "State": 1
       },
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-23T00:00:00",
+        "State": 1
       },
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-29T00:00:00",
+        "State": 1
       },
       {
         "Date": null,
@@ -97,13 +98,13 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Cédric",
       "LastName": "Kuntz",
-      "Email": null
+      "PersoId": "kuntzce",
+      "Email": "kuntzce@nodomain.com"
     },
     "Croissants": [
       {
@@ -147,13 +148,13 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Florian",
       "LastName": "Krem",
-      "Email": null
+      "PersoId": "kremfl",
+      "Email": "kremfl@nodomain.com"
     },
     "Croissants": [
       {
@@ -197,22 +198,22 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Gwenaël",
       "LastName": "Maillot",
-      "Email": null
+      "PersoId": "maillogw",
+      "Email": "maillogw@nodomain.com"
     },
     "Croissants": [
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-23T00:00:00",
+        "State": 1
       },
       {
-        "Date": null,
-        "State": 0
+        "Date": "2017-10-23T00:00:00",
+        "State": 1
       },
       {
         "Date": null,
@@ -247,13 +248,13 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Kévin",
       "LastName": "Rei-Bento",
-      "Email": null
+      "PersoId": "reibenke",
+      "Email": "reibenke@nodomain.com"
     },
     "Croissants": [
       {
@@ -297,13 +298,13 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Nelly",
       "LastName": "Moog",
-      "Email": null
+      "PersoId": "moogne",
+      "Email": "moogne@nodomain.com"
     },
     "Croissants": [
       {
@@ -347,13 +348,13 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   },
   {
     "Person": {
       "FirstName": "Romaine",
       "LastName": "Weber",
-      "Email": null
+      "PersoId": "weberrm",
+      "Email": "weberrm@nodomain.com"
     },
     "Croissants": [
       {
@@ -397,6 +398,5 @@
         "State": 0
       }
     ],
-    "CroissantsSlots": 10
   }
 ]

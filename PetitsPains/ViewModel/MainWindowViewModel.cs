@@ -490,6 +490,8 @@ namespace PetitsPains.ViewModel
             }
 
             IsSendingEmail = false;
+
+            Save();
         }
 
         /// <summary>
@@ -545,7 +547,7 @@ namespace PetitsPains.ViewModel
             // TODO: call a dialog using the MVVM pattern to confirm the line removal.
             string msgtext = String.Format("Voulez vous supprimer la ligne pour {0} ?", line.Person.ToString());
             string txt = "Confirmer la suppression";
-            MessageBoxButton button = MessageBoxButton.YesNoCancel;
+            MessageBoxButton button = MessageBoxButton.YesNo;
 
             MessageBoxResult result = System.Windows.MessageBox.Show(msgtext, txt, button, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)

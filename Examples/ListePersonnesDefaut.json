@@ -2,41 +2,49 @@
   {
     "FirstName": "Adrien",
     "LastName": "Finck",
-    "Email": null
+    "PersoId": "finckad",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Benoit",
     "LastName": "Masson-Bedeau",
-    "Email": null
+    "PersoId": "massonbn",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Cédric",
     "LastName": "Kuntz",
-    "Email": null
+    "PersoId": "kuntzce",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Florian",
     "LastName": "Krem",
-    "Email": null
+    "PersoId": "kremfl",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Gwenaël",
     "LastName": "Maillot",
-    "Email": null
+    "PersoId": "maillogw",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Kévin",
     "LastName": "Rei-Bento",
-    "Email": null
+    "PersoId": "reibenke",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Nelly",
     "LastName": "Moog",
-    "Email": null
+    "PersoId": "moogne",
+    "Email": "test@nodomain.com"
   },
   {
     "FirstName": "Romaine",
     "LastName": "Weber",
-    "Email": null
+    "PersoId": "weberrm",
+    "Email": "test@nodomain.com"
   }
 ]

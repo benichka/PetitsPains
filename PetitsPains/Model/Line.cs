@@ -518,7 +518,6 @@ namespace PetitsPains.Model
         {
             Person = info.GetValue("Person", typeof(Person)) as Person;
             Croissants = info.GetValue("Croissants", typeof(ItemsChangeObservableCollection<Croissant>)) as ItemsChangeObservableCollection<Croissant>;
-            this._CroissantsSlots = (int)info.GetValue("CroissantsSlots", typeof(int));
             PenaltiesAdded = new ObservableCollection<DateTime>();
         }
 
@@ -532,7 +531,6 @@ namespace PetitsPains.Model
         {
             info.AddValue("Person", Person);
             info.AddValue("Croissants", Croissants);
-            info.AddValue("CroissantsSlots", CroissantsSlots);
         }
 
         /// <summary>

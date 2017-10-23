@@ -19,7 +19,7 @@ namespace PetitsPains.Resources
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+    #line 1 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class EmailTemplate : EmailTemplateBase
     {
@@ -33,7 +33,7 @@ namespace PetitsPains.Resources
                     "ment</title>\r\n</head>\r\n\r\n<body style=\"font-family: Verdana, sans-serif;\">\r\n    <" +
                     "h1>Rapport en date du ");
             
-            #line 15 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 15 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(date.ToString("d")));
             
             #line default
@@ -49,7 +49,7 @@ namespace PetitsPains.Resources
     </div>
     ");
             
-            #line 24 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 24 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     var peopleThatGotAPenalty = (from line in lines
                                 where line.PenaltiesAdded.Count > 0
@@ -68,7 +68,7 @@ namespace PetitsPains.Resources
             this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Les personnes suivantes ont oublié de sou" +
                     "mettre leur CRA :\r\n        <ul>\r\n        ");
             
-            #line 38 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 38 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         foreach(var person in peopleThatGotAPenalty)
         {
@@ -78,14 +78,14 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    <li style=\"margin: 0.2em\">");
             
-            #line 41 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 41 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(person.ToString()));
             
             #line default
             #line hidden
             this.Write("</li>\r\n        ");
             
-            #line 42 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 42 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
         
@@ -94,7 +94,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("</ul>\r\n    </div>\r\n");
             
-            #line 47 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 47 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     }
     else
@@ -106,7 +106,7 @@ namespace PetitsPains.Resources
             this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Aucun oubli de CRA ce jour.\r\n    </div>\r\n" +
                     "");
             
-            #line 54 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 54 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     }
 
@@ -119,7 +119,7 @@ namespace PetitsPains.Resources
             this.Write("    <div style=\"margin:0 0 1em 0\">\r\n        <h3 style=\"color:red\">Les personnes s" +
                     "uivantes doivent ramener les croissants !</h3>\r\n        <ul>\r\n        ");
             
-            #line 62 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 62 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         foreach(var person in peopleThatHaveToBringCroissants)
         {
@@ -129,14 +129,14 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    <li style=\"margin: 0.2em\">");
             
-            #line 65 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 65 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(person.ToString()));
             
             #line default
             #line hidden
             this.Write("</li>\r\n        ");
             
-            #line 66 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 66 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
         
@@ -145,7 +145,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("</ul>\r\n    </div>\r\n");
             
-            #line 71 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 71 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     }
     
@@ -154,7 +154,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    <table style=\"font-family: Verdana, sans-serif;\">\r\n    ");
             
-            #line 75 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 75 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
     int length = lines.Count();
     for (int i = 0; i < length; i++)
@@ -165,14 +165,14 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    <tr>\r\n            <td style=\"margin:0 20px 0 0\">");
             
-            #line 80 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 80 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(lines[i].Person.ToString()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n");
             
-            #line 81 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 81 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         foreach (var croissant in lines[i].Croissants)
         {
@@ -185,7 +185,7 @@ namespace PetitsPains.Resources
             this.Write("            <td><img height=\"16\" width=\"16\" src=\"cid:croissantEmpty\" alt=\"Emplace" +
                     "ment non utilisé\" title=\"Emplacement non utilisé\" /></td>\r\n");
             
-            #line 87 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 87 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
             }
             else if (croissant.State == Croissant.CroissantState.IsUsed)
@@ -197,21 +197,21 @@ namespace PetitsPains.Resources
             this.Write("            <td><img height=\"16\" width=\"16\" src=\"cid:croissantFilled\" alt=\"Pénali" +
                     "té en date du ");
             
-            #line 91 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 91 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(croissant.Date.Value.ToString("d")));
             
             #line default
             #line hidden
             this.Write("\" title=\"Pénalité en date de ");
             
-            #line 91 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 91 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(croissant.Date.Value.ToString("d")));
             
             #line default
             #line hidden
             this.Write("\" /></td>\r\n");
             
-            #line 92 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 92 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
             }
             else if (croissant.State == Croissant.CroissantState.IsDeactivated)
@@ -223,7 +223,7 @@ namespace PetitsPains.Resources
             this.Write("            <td><img height=\"16\" width=\"16\" src=\"cid:croissantGreyed\" alt=\"Emplac" +
                     "ement désactivé\" title=\"Emplacement désactivé\" /></td>\r\n");
             
-            #line 97 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 97 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
             }
         }
@@ -233,7 +233,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    ");
             
-            #line 101 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 101 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
 
         // Only for indentation purpose
@@ -245,7 +245,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    </tr>\r\n");
             
-            #line 107 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 107 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
         else
@@ -256,7 +256,7 @@ namespace PetitsPains.Resources
             #line hidden
             this.Write("    </tr>\r\n    ");
             
-            #line 112 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
+            #line 112 "D:\01 – Informatique\programmation\Projects\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
         }
     }
@@ -270,9 +270,9 @@ namespace PetitsPains.Resources
         <ul>
             <li style=""margin: 0.2em"">le CRA est à soumettre chaque jour de présence avant de partir ;</li>
             <li style=""margin: 0.2em"">le relevé des CRA se fait le matin ;</li>
-            <li style=""margin: 0.2em"">du lundi au jeudi, si le CRA du jour précédent est manquant, la personne a une pénalité d'un croissant ;</li>
+            <li style=""margin: 0.2em"">du mardi au jeudi, si le CRA du jour précédent est manquant, la personne a une pénalité d'un croissant ;</li>
             <li style=""margin: 0.2em"">le vendredi et le lundi, s'il manque un CRA des jours précédents, la personne a une pénalité de deux croissants ;</li>
-            <li style=""margin: 0.2em"">si la personne n'a pas saisie sont CRA de la semaine, elle a une pénalité « foutage de gueule » d'un croissant ;</li>
+            <li style=""margin: 0.2em"">si la personne n'a pas saisi sont CRA de la semaine, une pénalité « foutage de gueule » d'un croissant est ajoutée ;</li>
             <li style=""margin: 0.2em"">si une personne complète sa ligne, elle doit ramener croissants/petits pains/gâteau à l'équipe ET sa ligne est amputée d'une case.</li>
         </ul>
     </div>
