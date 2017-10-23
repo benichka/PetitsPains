@@ -31,6 +31,7 @@ namespace PetitsPains.ViewModel
             private set
             {
                 SetProperty(CheckCommands, ref this._Lines, value);
+                this._Lines.CollectionChanged += HandleLinesCollectionChanged;
 
                 // Subscribe to each event that the line can raise.
                 foreach (var line in this._Lines)
@@ -190,7 +191,7 @@ namespace PetitsPains.ViewModel
 
             AddLineCommand = new CommandHandler(AddLine, () => true);
 
-            EmailCommand = new CommandHandler(EmailSituation, () => !IsSendingEmail);
+            EmailCommand = new CommandHandler(EmailSituation, () => (Lines.Count > 0 && !IsSendingEmail));
 
             // The Save button can not be clicked if the path is empty.
             SaveCommand = new CommandHandler(Save, () => !String.IsNullOrWhiteSpace(RootPath));
@@ -231,6 +232,17 @@ namespace PetitsPains.ViewModel
         private void HandleLinePropertyChanded(object sender, EventArgs e)
         {
             // When the line changes, we need to re-check our commands
+            CheckCommands();
+        }
+
+        /// <summary>
+        /// Event handling for the event CollectionChanged of the list of lines.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments.</param>
+        private void HandleLinesCollectionChanged(object sender, EventArgs e)
+        {
+            // When the collection change, we need to re-check our commands
             CheckCommands();
         }
 

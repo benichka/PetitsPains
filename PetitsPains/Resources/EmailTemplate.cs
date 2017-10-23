@@ -30,7 +30,8 @@ namespace PetitsPains.Resources
         public virtual string TransformText()
         {
             this.Write("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n<title>Title of the docu" +
-                    "ment</title>\r\n</head>\r\n\r\n<body>\r\n    <h1>Rapport en date du ");
+                    "ment</title>\r\n</head>\r\n\r\n<body style=\"font-family: Verdana, sans-serif;\">\r\n    <" +
+                    "h1>Rapport en date du ");
             
             #line 15 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(date.ToString("d")));
@@ -64,8 +65,8 @@ namespace PetitsPains.Resources
             
             #line default
             #line hidden
-            this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Les personnes suivantes ont oubliés de so" +
-                    "umettre leur CRA :\r\n        <ul>\r\n        ");
+            this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Les personnes suivantes ont oublié de sou" +
+                    "mettre leur CRA :\r\n        <ul>\r\n        ");
             
             #line 38 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
@@ -102,8 +103,8 @@ namespace PetitsPains.Resources
             
             #line default
             #line hidden
-            this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Aucun oublie de CRA ce jour.\r\n    </div>\r" +
-                    "\n");
+            this.Write("<div style=\"margin:0 0 1em 0\">\r\n        Aucun oubli de CRA ce jour.\r\n    </div>\r\n" +
+                    "");
             
             #line 54 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 
@@ -151,7 +152,7 @@ namespace PetitsPains.Resources
             
             #line default
             #line hidden
-            this.Write("    <table>\r\n    ");
+            this.Write("    <table style=\"font-family: Verdana, sans-serif;\">\r\n    ");
             
             #line 75 "C:\00 - Data\programmation\PetitsPains\PetitsPains\Resources\EmailTemplate.tt"
 

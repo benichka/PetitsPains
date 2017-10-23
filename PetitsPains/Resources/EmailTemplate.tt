@@ -11,7 +11,7 @@
 <title>Title of the document</title>
 </head>
 
-<body>
+<body style="font-family: Verdana, sans-serif;">
     <h1>Rapport en date du <#= date.ToString("d") #></h1>
     <div style="font-size:70%; margin:0 0 1em 0">
         Légende :
@@ -33,7 +33,7 @@
     if (peopleThatGotAPenalty.Count > 0)
     {
         #><div style="margin:0 0 1em 0">
-        Les personnes suivantes ont oubliés de soumettre leur CRA :
+        Les personnes suivantes ont oublié de soumettre leur CRA :
         <ul>
         <#
         foreach(var person in peopleThatGotAPenalty)
@@ -49,7 +49,7 @@
     else
     {
         #><div style="margin:0 0 1em 0">
-        Aucun oublie de CRA ce jour.
+        Aucun oubli de CRA ce jour.
     </div>
 <#
     }
@@ -71,7 +71,7 @@
 <#
     }
     #>
-    <table>
+    <table style="font-family: Verdana, sans-serif;">
     <#
     int length = lines.Count();
     for (int i = 0; i < length; i++)
