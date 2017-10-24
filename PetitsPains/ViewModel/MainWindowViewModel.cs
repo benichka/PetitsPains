@@ -202,13 +202,13 @@ namespace PetitsPains.ViewModel
             ProcessedDate = DateTime.Now;
 
             // Load the configuration.
-            PersonsStore.ReadConfig();
+            PetitsPainsStore.ReadConfig();
 
             // Set the original root path.
-            this._RootPathOriginal = PersonsStore.RootPath;
+            this._RootPathOriginal = PetitsPainsStore.RootPath;
 
             // Retrieve the root path for the files of the application.
-            RootPath = PersonsStore.RootPath;
+            RootPath = PetitsPainsStore.RootPath;
 
             // Load the lines.
             Load();
@@ -318,7 +318,7 @@ namespace PetitsPains.ViewModel
             try
             {
                 // Check the path and update it if it's valid.
-                isValidPath = File.Exists(Path.Combine(RootPath, PersonsStore.CroissantLinesFileName));
+                isValidPath = File.Exists(Path.Combine(RootPath, PetitsPainsStore.CroissantLinesFileName));
 
                 UpdatePath();
             }
@@ -343,7 +343,7 @@ namespace PetitsPains.ViewModel
         /// </summary>
         private void Load()
         {
-            Lines = new ItemsChangeObservableCollection<Line>(PersonsStore.ReadCroissantLines());
+            Lines = new ItemsChangeObservableCollection<Line>(PetitsPainsStore.ReadCroissantsLines());
         }
 
         /// <summary>
@@ -511,10 +511,10 @@ namespace PetitsPains.ViewModel
                 UpdatePath();
 
                 // Update the config file.
-                PersonsStore.WriteConfig();
+                PetitsPainsStore.WriteConfig();
 
                 // Save the lines.
-                PersonsStore.WriteCroissantLines(this.Lines.ToList());
+                PetitsPainsStore.WriteCroissantsLines(this.Lines.ToList());
             }
         }
 
@@ -573,8 +573,8 @@ namespace PetitsPains.ViewModel
         private void ManageFilesOnPathChanged()
         {
             // move existing files into the new directory if the directory changed.
-            var personsFilePathOriginal = Path.Combine(RootPathOriginal, PersonsStore.DefaultPeopleFileName);
-            var personsFilePathTarget = Path.Combine(RootPath, PersonsStore.DefaultPeopleFileName);
+            var personsFilePathOriginal = Path.Combine(RootPathOriginal, PetitsPainsStore.DefaultPeopleFileName);
+            var personsFilePathTarget = Path.Combine(RootPath, PetitsPainsStore.DefaultPeopleFileName);
             if (File.Exists(personsFilePathOriginal) && personsFilePathOriginal != personsFilePathTarget)
             {
                 File.Move(personsFilePathOriginal, personsFilePathTarget);
@@ -587,7 +587,7 @@ namespace PetitsPains.ViewModel
         private void UpdatePath()
         {
             // Update the application configuration.
-            PersonsStore.RootPath = RootPath;
+            PetitsPainsStore.RootPath = RootPath;
 
             // If the path changed, move files.
             ManageFilesOnPathChanged();
