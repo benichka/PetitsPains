@@ -13,7 +13,7 @@ namespace PetitsPains.Data
     /// <summary>
     /// Helper class to store and retrieve the people list.
     /// </summary>
-    internal static class PersonsStore
+    internal static class PetitsPainsStore
     {
         private static string _RootPath;
         /// <summary>Root path to files.</summary>
@@ -125,8 +125,8 @@ namespace PetitsPains.Data
         /// <summary>
         /// Write the list of lines of croissants to a file.
         /// </summary>
-        /// <param name="croissantLines">List of Line of croissants.</param>
-        public static void WriteCroissantLines(List<Line> croissantLines)
+        /// <param name="croissantsLines">List of Lines of croissants.</param>
+        public static void WriteCroissantsLines(List<Line> croissantsLines)
         {
             var jsonSer = new JsonSerializer();
             jsonSer.Converters.Add(new IsoDateTimeConverter() { Culture = CultureInfo.InvariantCulture });
@@ -136,7 +136,7 @@ namespace PetitsPains.Data
             using (StreamWriter sw = new StreamWriter(Path.Combine(RootPath, CroissantLinesFileName), false))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                jsonSer.Serialize(writer, croissantLines);
+                jsonSer.Serialize(writer, croissantsLines);
             }
         }
 
@@ -144,7 +144,7 @@ namespace PetitsPains.Data
         /// Read the list of lines of croissants from a file.
         /// </summary>
         /// <returns>List of lines of croissants.</returns>
-        public static List<Line> ReadCroissantLines()
+        public static List<Line> ReadCroissantsLines()
         {
             var filePath = Path.Combine(RootPath, CroissantLinesFileName);
 

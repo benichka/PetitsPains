@@ -47,7 +47,7 @@
         "Date": null,
         "State": 2
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -97,7 +97,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -147,7 +147,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -197,7 +197,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -247,7 +247,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -297,7 +297,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -347,7 +347,7 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   },
   {
     "Person": {
@@ -397,6 +397,6 @@
         "Date": null,
         "State": 0
       }
-    ],
+    ]
   }
 ]

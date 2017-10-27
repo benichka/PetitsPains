@@ -117,7 +117,7 @@
     <Compile Include="Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Converter\StringNullOrEmptyToBoolConverter.cs" />
     <Compile Include="Converter\StringNullOrEmptyToVisibilityConverter.cs" />
-    <Compile Include="Data\PersonsStore.cs" />
+    <Compile Include="Data\PetitsPainsStore.cs" />
     <Compile Include="Model\Croissant.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\Person.cs" />
