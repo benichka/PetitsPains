@@ -18,6 +18,7 @@ namespace PetitsPains.Resources
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="date">Date at which the report was created.</param>
         /// <param name="lines">Collection of lines.</param>
         public EmailTemplate(DateTime date, ItemsChangeObservableCollection<Line> lines)
         {
