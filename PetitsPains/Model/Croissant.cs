@@ -13,7 +13,7 @@ namespace PetitsPains.Model
     /// on it.
     /// </summary>
     [Serializable]
-    public class Croissant : ISerializable, INotifyPropertyChanged, IComparable<Croissant>
+    public class Croissant : ISerializable, IComparable<Croissant>, INotifyPropertyChanged
     {
         /// <summary>
         /// Represents the state of a croissant.
@@ -159,7 +159,7 @@ namespace PetitsPains.Model
             }
             else
             {
-                sb.Append("No date; ");
+                sb.Append("pas de pénalité ; ");
             }
             sb.Append(String.Format("State: {0}; ", State));
 
