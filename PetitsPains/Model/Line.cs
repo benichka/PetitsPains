@@ -119,27 +119,6 @@ namespace PetitsPains.Model
         #endregion constructors
 
         /// <summary>
-        /// Returns the last date the person got a penalty for forgetting to submit its CRA.
-        /// </summary>
-        /// <returns>Last date the person got a penalty for forgetting to submit its CRA, or null if the person never missed a date.</returns>
-        public DateTime? GetLastCroissantDate()
-        {
-            if (Croissants != null && Croissants.Count > 0)
-            {
-                DateTime? result = (from Croissant c in Croissants
-                              where c.Date.HasValue
-                              orderby c.Date.Value descending
-                              select c.Date).FirstOrDefault();
-
-                return result;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Returns the number of penalties that the person has.
         /// </summary>
         /// <returns>Number of penalties that the person has.</returns>
@@ -148,7 +127,7 @@ namespace PetitsPains.Model
             if (Croissants != null)
             {
                 var result = (from Croissant c in Croissants
-                              where c.State == Croissant.CroissantState.IsUsed && c.State != Croissant.CroissantState.IsDeactivated
+                              where c.State == Croissant.CroissantState.IsUsed
                               select c).Count();
                 return result;
             }
@@ -162,7 +141,7 @@ namespace PetitsPains.Model
         /// Returns the number of penalties the person is allowed to have before
         /// bringing the croissants.
         /// </summary>
-        /// <returns>The number of penalties the person is allowed to have before bringing the croissants</returns>
+        /// <returns>The number of penalties the person is allowed to have before bringing the croissants.</returns>
         public int GetPenaltiesLimit()
         {
             if (Croissants != null)
@@ -271,7 +250,7 @@ namespace PetitsPains.Model
             // or 3 if the person didn't submit their CRA the whole week.
             // Plus, if we remove a penalty in the week and the person already has a penalty on friday
             // and didn't submit their CRA the rest of the week, the added "foutage de gueule" croissant
-            // need to be remove.
+            // needs to be remove.
         }
 
         /// <summary>
