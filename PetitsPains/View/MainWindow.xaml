@@ -12,11 +12,8 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <conv:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
-        <conv:NullToVisibilityConverter x:Key="nullToVisibilityConverter" />
         <conv:NullToBoolConverter x:Key="nullToBoolConverter" />
         <conv:StringNullOrEmptyToBoolConverter x:Key="stringNullOrEmptyToBoolConverter" />
-        <conv:StringNullOrEmptyToVisibilityConverter x:Key="stringNullOrEmptyToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
@@ -190,21 +187,6 @@
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">
                     Retirer la pénalité
                 </TextBlock>
-                <Button.Style>
-                    <!-- We can't directly use the Visibility property of the button because when a line is not selected, SelectedCroissant -->
-                    <!-- is not accessible -> the binding doesn't happen and the button is visible. -->
-                    <Style TargetType="Button">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="True">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SelectedLine.SelectedCroissant, Converter={StaticResource nullToBoolConverter}}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
             </Button>
             <Button x:Name="ReActivateBtn" Grid.Column="3" Width="90" HorizontalAlignment="Center" Command="{Binding ActivateCroissantCommand}">
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">
