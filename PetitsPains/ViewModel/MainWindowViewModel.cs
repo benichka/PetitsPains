@@ -469,13 +469,15 @@ namespace PetitsPains.ViewModel
                     // For instance: <img src="cid:croissantEmpty" />
                     // In Outlook, this attribute is the property that has the schema name
                     // http://schemas.microsoft.com/mapi/proptag/0x3712001E.
-                    Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_empty.png"));
+                    var appPath = AppDomain.CurrentDomain.BaseDirectory;
+
+                    Attachment croissantEmptyAttachment = mailItem.Attachments.Add(Path.Combine(appPath, "Assets/croissant_empty.png"));
                     croissantEmptyAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantEmpty");
 
-                    Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_filled.png"));
+                    Attachment croissantFilledAttachment = mailItem.Attachments.Add(Path.Combine(appPath, "Assets/croissant_filled.png"));
                     croissantFilledAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantFilled");
 
-                    Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.GetFullPath("Assets/croissant_greyed.png"));
+                    Attachment croissantGreyedAttachment = mailItem.Attachments.Add(Path.Combine(appPath, "Assets/croissant_greyed.png"));
                     croissantGreyedAttachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "croissantGreyed");
 
                     mailItem.HTMLBody = emailTemplateContent;
